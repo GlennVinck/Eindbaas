@@ -1,0 +1,70 @@
+body{
+    background-color: #020c0b;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    padding: 0; 
+}
+
+.PromptopiaRegister {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr [form] minmax(240px, 450px) 1fr;
+    grid-template-rows: 1fr [form] 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    background-color: #020c0b;
+  }
+  
+  .form--login {
+    background-color: #f3f3f3;
+    padding: 1em;
+    color: #505050;
+    grid-column: form;
+    grid-row: form;
+  }
+  
+  .form__error {
+    background-color: #999999;
+    color: white;
+    font-weight: lighter;
+    padding: 0.3em 1em;
+    margin-bottom: 1em;
+    font-size: 0.9em;
+  }
+  
+  .form__field {
+    padding-bottom: 1em;
+  }
+  
+  .form__field label {
+    display: block;
+    margin-bottom: 0.2em;
+  }
+  
+  .form__field .label__inline {
+    display: inline-block;
+  }
+  
+  .form__field input[type="text"],
+  .form__field input[type="password"] {
+    width: 100%;
+    padding: 0.3em;
+    font-size: 1.4em;
+  }
+  
+  .btn {
+    width: 100%;
+    margin: 0.5em auto;
+  }
+  
+  .btn--primary {
+    background-color: red;
+    color: white;
+    text-align: center;
+    border: none;
+    padding: 0.3em 2em;
+    font-size: 1.4em;
+  }
