@@ -1,7 +1,5 @@
 <?php 
 
-$conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-
 session_start();
 
 ?>
