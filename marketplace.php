@@ -1,11 +1,8 @@
 <?php 
 
-$conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-
 session_start();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,5 +17,6 @@ session_start();
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
+<h1 style="margin:100px;">Dit is de marktplaats</h1>
 </body>
 </html>

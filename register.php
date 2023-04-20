@@ -1,6 +1,6 @@
 <?php
   if(!empty($_POST)){
-    $username = $_POST["username"];
+    $email = $_POST["username"];
     $password = $_POST["password"];
 
     $options = [
@@ -9,8 +9,13 @@
 
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
 
-    $conn = new mysqli("ID394672_eindbaas.db.webhosting.be", "ID394672_eindbaas", "Eindbaas123", "ID394672_eindbaas");
-    $result = $conn->query("insert into users (username, password) values ('".$conn->real_escape_string($username)."', '".$conn->real_escape_string($password)."')");
+    $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
+    $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
+	$query->bindValue(":email", $email);
+	$query->bindValue(":password", $password);
+	$query->execute();
+
+	header("Location: login.php");
 }
 
 ?><!DOCTYPE html>
@@ -19,14 +24,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrompTopia: Register</title>
-<link rel="stylesheet" href="../css/style.css">
+    <title>Register | PrompTopia</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<?php include_once "assets/topnav.php"; ?>
+
 	<div class="PromptopiaRegister">
 		<div class="form form--register">
 			<form action="" method="post">
-				<h2 form__title>Register</h2>
+				<h2 form__title>Create Your Account</h2>
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">

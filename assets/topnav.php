@@ -13,9 +13,18 @@
             </button>
         </div>
         <ul class="topnav-menu">
-            <li class="topnav-menu-item"><a href="#">Marketplace</a></li>
-            <li class="topnav-menu-item"><a href="#">Login</a></li>
-            <li class="topnav-menu-item"><a href="assets/register.php">Register</a></li>
+            <li class="topnav-menu-item"><a href="marketplace.php">Marketplace</a></li>
+            <?php
+            // check if user is logged in
+            if (isset($_SESSION['username'])) {
+                // display "My Profile" link
+                echo '<li class="topnav-menu-item"><a href="profile.php">My Profile</a></li>';
+            } else {
+                // display "Login" and "Register" links
+                echo '<li class="topnav-menu-item"><a href="login.php">Login</a></li>';
+                echo '<li class="topnav-menu-item"><a href="register.php">Register</a></li>';
+            }
+            ?>
         </ul>
     </div>
 </nav>
