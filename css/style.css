@@ -119,40 +119,57 @@ body{
     opacity: .9;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .PromptopiaRegister {
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr [form] minmax(240px, 450px) 1fr;
+    grid-template-columns: 1fr [form] minmax(240px, 800px) 1fr;
     grid-template-rows: 1fr [form] 1fr 1fr;
     justify-content: center;
     align-items: center;
     background-color: #020c0b;
   }
   
-  .form--register {
-    background-color: #041e1b;
+  .form {
+    background-color: #020f0d;
     padding: 1em;
-    color: #ffffff;
     border-radius: 1em;
     grid-column: form;
     grid-row: form;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
+  }
+
+  .form-left {
+    width: 400px;
+    height: 400px;
+    background-image: url("../images/astronaut.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 1em 5em 5em 1em;
+  }
+
+  .form-right {
+    width: 400px;
+    height: 400px;
+    margin-left: 32px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .form-title {
+    font-size: 2em;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+  }
+
+  .form-subtitle {
+    font-size: 1em;
+    font-weight: 200;
+    color: #3a5f5b;
+    margin: 0 0 32px 0;
   }
   
   .form__error {
@@ -170,18 +187,23 @@ body{
   
   .form__field label {
     display: block;
-    margin-bottom: 0.2em;
-  }
-  
-  .form__field .label__inline {
-    display: inline-block;
+    margin-bottom: 0.5em;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #7ac4bb;
   }
   
   .form__field input[type="text"],
   .form__field input[type="password"] {
+    box-sizing: border-box;
     width: 100%;
-    padding: 0.3em;
-    font-size: 1.4em;
+    padding: 0.6em;
+    font-size: 1em;
+    background: none;
+    border: 1px solid #3a5f5b;
+    border-radius: 0.5em;
+    color: #7ac4bb;
+    font-family: Finlandica,sans-serif;
   }
   
   .btn {
@@ -189,11 +211,15 @@ body{
   }
   
   .btn--primary {
+    width: 100%;
     background-color: #10efd4;
-    color: #000000;
+    color: #020c0b;
     text-align: center;
     border: none;
-    padding: 0.3em 2em;
-    font-size: 1.4em;
     border-radius: 0.5em;
+    padding: 0.6em 2em;
+    font-size: 1.2em;
+    font-weight: 500;
+    font-family: Finlandica,sans-serif;
+    cursor: pointer;
   }

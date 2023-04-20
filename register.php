@@ -34,9 +34,11 @@
 <?php include_once "assets/topnav.php"; ?>
 
 	<div class="PromptopiaRegister">
-		<div class="form form--register">
-			<form action="" method="post">
-				<h2 form__title>Create Your Account</h2>
+		<div class="form">
+			<div class="form-left"></div>
+			<form class="form-right" action="" method="post">
+				<h2 class="form-title">Create Your Account</h2>
+				<h3 class="form-subtitle">Enter your credentials to create your account</h2>
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">

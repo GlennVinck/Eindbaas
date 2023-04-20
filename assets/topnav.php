@@ -22,7 +22,7 @@
                 echo '<li class="topnav-menu-item"><a href="logout.php">Log Out</a></li>';
             } else {
                 // display "Login" and "Register" links
-                echo '<li class="topnav-menu-item"><a href="login.php">Login</a></li>';
+                echo '<li class="topnav-menu-item"><a href="login.php">Log In</a></li>';
                 echo '<li class="topnav-menu-item"><a href="register.php">Register</a></li>';
             }
             ?>

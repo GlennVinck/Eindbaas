@@ -22,8 +22,7 @@ if (!empty($_POST)) {
     if (canLogin($email, $password)) {
         session_start();
         $_SESSION['username'] = $email;
-        /*header('Location: dashboard.php');*/
-        echo "You are logged in";
+        header('Location: index.php');
     } else {
         $error = true;
     }
@@ -44,10 +43,12 @@ if (!empty($_POST)) {
 <body>
 <?php include_once "assets/topnav.php"; ?>
 
-	<div class="PromptopiaRegister">
-		<div class="form form--register">
-			<form action="" method="post">
-				<h2 form__title>Log in</h2>
+<div class="PromptopiaRegister">
+		<div class="form">
+			<div class="form-left"></div>
+			<form class="form-right" action="" method="post">
+				<h2 class="form-title">Log in</h2>
+				<h3 class="form-subtitle">Enter your credentials to log in to your account</h2>
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">
@@ -67,7 +68,7 @@ if (!empty($_POST)) {
 				</div>
 
 				<div class="form__field">
-					<input type="submit" value="Log in" class="btn btn--primary">	
+					<input type="submit" value="Sign Up" class="btn btn--primary">	
 				</div>
 			</form>
 		</div>
