@@ -18,5 +18,6 @@ session_start();
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
+<h1 style="margin:100px;">Dit is de Homepage</h1>
 </body>
 </html>

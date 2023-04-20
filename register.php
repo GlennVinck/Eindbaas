@@ -1,24 +1,35 @@
 <?php
-  if(!empty($_POST)){
+if (!empty($_POST)) {
     $email = $_POST["username"];
     $password = $_POST["password"];
 
+    if (empty($email) || empty($password)) {
+        $error = true;
+    }
+
     $options = [
-      'cost' => 12,
+        'cost' => 12,
     ];
+    $password = password_hash($password, PASSWORD_DEFAULT, $options);
 
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
+    try {
+        $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
+        
+		
+		if (!isset($error)) {
+            $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
+            $query->bindValue(":email", $email);
+            $query->bindValue(":password", $password);
+            $query->execute();
 
-    $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-    $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
-	$query->bindValue(":email", $email);
-	$query->bindValue(":password", $password);
-	$query->execute();
-
-	header("Location: login.php");
+            header("Location: login.php");
+        }  
+	} catch (Throwable $error) {
+        echo $error->getMessage();
+    }
 }
-
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,9 +53,7 @@
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">
-						<p>
-							Sorry, we can't log you in with that email address and password. Can you try again?
-						</p>
+						<p>Please enter both email and password</p>
 					</div>
 				<?php endif; ?>
 

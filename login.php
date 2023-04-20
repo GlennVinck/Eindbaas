@@ -8,7 +8,7 @@ function canLogin ($email, $password) {
     $user = $statement->fetch();
     $hash = $user['password'];
 
-    if (password_verify($password, $hash)) {
+    if ($user !== false && password_verify($password, $hash)) {
         return true;
     } else {
         return false;
@@ -19,12 +19,21 @@ if (!empty($_POST)) {
     $email = $_POST['username'];
     $password = $_POST['password'];
 
-    if (canLogin($email, $password)) {
-        session_start();
-        $_SESSION['username'] = $email;
-        header('Location: index.php');
-    } else {
-        $error = true;
+    try {
+        if (empty($email) || empty($password)) {
+            throw new Exception('Please enter both email and password');
+        }
+
+        if (canLogin($email, $password)) {
+            session_start();
+            $_SESSION['username'] = $email;
+            header('Location: index.php');
+            exit;
+        } else {
+            throw new Exception('Invalid email or password');
+        }
+    } catch (Exception $e) {
+        $error = $e->getMessage();
     }
 }
 
@@ -47,7 +56,7 @@ if (!empty($_POST)) {
 		<div class="form">
 			<div class="form-left"></div>
 			<form class="form-right" action="" method="post">
-				<h2 class="form-title">Log in</h2>
+				<h2 class="form-title">Log In</h2>
 				<h3 class="form-subtitle">Enter your credentials to log in to your account</h2>
 
 				<?php if( isset($error) ):?>
@@ -68,7 +77,7 @@ if (!empty($_POST)) {
 				</div>
 
 				<div class="form__field">
-					<input type="submit" value="Sign Up" class="btn btn--primary">	
+					<input type="submit" value="Log In" class="btn btn--primary">	
 				</div>
 			</form>
 		</div>
