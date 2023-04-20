@@ -24,7 +24,7 @@
 </head>
 <body>
 	<div class="PromptopiaRegister">
-		<div class="form form--login">
+		<div class="form form--register">
 			<form action="" method="post">
 				<h2 form__title>Register</h2>
 
