@@ -17,9 +17,12 @@ body{
     padding-bottom: 8px;
     padding-right: 16px;
     padding-left: 16px;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .topnav-title{
@@ -66,7 +69,7 @@ body{
     padding: 8px 16px;
     background-color: #041e1b;
     color: #e7e7e7;
-    font-family: Finlandica,sans-serif
+    font-family: Finlandica,sans-serif;
 }
 
 .search-btn{
@@ -98,10 +101,23 @@ body{
 .topnav-menu{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 }
 
+.topnav-menu-item a{
+    padding: 8px 12px;
+    transition: .3s;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+}
 
+.topnav-menu-item a:hover{
+    opacity: .9;
+}
 
 
 
