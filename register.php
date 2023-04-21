@@ -2,9 +2,21 @@
 if (!empty($_POST)) {
     $email = $_POST["username"];
     $password = $_POST["password"];
+    $errors = array();
 
+	// Check if email and/or password are not empty
     if (empty($email) || empty($password)) {
-        $error = true;
+        $errors[] = "Email and password are required.";
+    }
+
+    // Validate the email address
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email address.";
+    }
+
+    // Check if the password has at least one capital letter
+    if (!preg_match('/[A-Z]/', $password)) {
+        $errors[] = "Password must contain at least one capital letter.";
     }
 
     $options = [
@@ -16,14 +28,14 @@ if (!empty($_POST)) {
         $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
         
 		
-		if (!isset($error)) {
+		if (empty($errors)) {
             $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
             $query->bindValue(":email", $email);
             $query->bindValue(":password", $password);
             $query->execute();
 
             header("Location: login.php");
-        }  
+        } 
 	} catch (Throwable $error) {
         echo $error->getMessage();
     }
@@ -51,11 +63,14 @@ if (!empty($_POST)) {
 				<h2 class="form-title">Create Your Account</h2>
 				<h3 class="form-subtitle">Enter your credentials to create your account</h2>
 
-				<?php if( isset($error) ):?>
-					<div class="form__error">
-						<p>Please enter both email and password</p>
-					</div>
+				<?php if (!empty($errors)): ?>
+   					<div class="form__error">
+        				<?php foreach ($errors as $error): ?>
+            				<p><?php echo $error; ?></p>
+						<?php endforeach; ?>
+    				</div>
 				<?php endif; ?>
+
 
 				<div class="form__field">
 					<label for="Email">Email</label>

@@ -173,12 +173,14 @@ body{
   }
   
   .form__error {
-    background-color: #999999;
-    color: white;
+    color: rgb(153, 9, 9);
     font-weight: lighter;
-    padding: 0.3em 1em;
     margin-bottom: 1em;
     font-size: 0.9em;
+  }
+
+  .form__error p {
+    margin: 4px 0;
   }
   
   .form__field {
