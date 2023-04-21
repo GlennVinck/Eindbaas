@@ -89,7 +89,7 @@ body{
 }
 
 .search-btn:hover{
-    opacity: .9;
+    opacity: .6;
 }
 
 .search-icon{
@@ -126,8 +126,7 @@ body{
     grid-template-rows: 1fr [form] 1fr 1fr;
     justify-content: center;
     align-items: center;
-    background-color: #020c0b;
-  }
+}
   
   .form {
     background-color: #020f0d;
@@ -139,6 +138,8 @@ body{
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    box-shadow: 0px 0px 50px rgba(0, 0, 0, 1); 
+
   }
 
   .form-left {
@@ -207,6 +208,11 @@ body{
     color: #7ac4bb;
     font-family: Finlandica,sans-serif;
   }
+
+  .form__field input[type="text"]:focus,
+  .form__field input[type="password"]:focus {
+    outline: 1px solid #7ac4bb;
+  }
   
   .btn {
     margin: 0.5em auto;
@@ -224,4 +230,9 @@ body{
     font-weight: 500;
     font-family: Finlandica,sans-serif;
     cursor: pointer;
+    transition: .3s;
+  }
+
+  .btn--primary:hover {
+    opacity: .6;
   }
