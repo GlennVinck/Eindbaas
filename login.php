@@ -79,6 +79,7 @@ if (!empty($_POST)) {
 				<div class="form__field">
 					<input type="submit" value="Log In" class="btn btn--primary">	
 				</div>
+                <a href="forgot_password.php">Forgot Password?</a>
 			</form>
 		</div>
 	</div>
