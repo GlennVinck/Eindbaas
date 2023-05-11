@@ -1,16 +1,18 @@
 <?php
+include_once (__DIR__ . "bootstrap.php");
+
 if (!empty($_POST)) {
-    $email = $_POST["username"];
+	$test = $_POST["username"];
     $password = $_POST["password"];
     $errors = array();
 
 	// Check if email and/or password are not empty
-    if (empty($email) || empty($password)) {
+    if (empty($test) || empty($password)) {
         $errors[] = "Email and password are required.";
     }
 
     // Validate the email address
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($test, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email address.";
     }
 
@@ -30,7 +32,7 @@ if (!empty($_POST)) {
 		
 		if (empty($errors)) {
             $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
-            $query->bindValue(":email", $email);
+            $query->bindValue(":email", $test);
             $query->bindValue(":password", $password);
             $query->execute();
 
@@ -39,7 +41,26 @@ if (!empty($_POST)) {
 	} catch (Throwable $error) {
         echo $error->getMessage();
     }
+
+$email = new \SendGrid\Mail\Mail(); 
+$email->setFrom("promptopia6@gmail.com", "PrompTopia");
+$email->setSubject("Welcome to PrompTopia");
+$email->addTo($_POST["username"]);
+$email->addContent(
+    "text/html",
+    "Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Best,<br>PrompTopia");
+$sendgrid = new \SendGrid('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');
+try {
+    $response = $sendgrid->send($email);
+    print $response->statusCode() . "\n";
+    print_r($response->headers());
+    print $response->body() . "\n";
+} catch (Exception $e) {
+    echo 'Caught exception: '. $e->getMessage() ."\n";
 }
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +95,7 @@ if (!empty($_POST)) {
 
 				<div class="form__field">
 					<label for="Email">Email</label>
-					<input type="text" id="username" name="username">
+					<input type="text" name="username">
 				</div>
 				<div class="form__field">
 					<label for="Password">Password</label>

@@ -1,4 +1,6 @@
 <?php
+include_once (__DIR__ . "bootstrap.php");
+
 $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
 
 
@@ -26,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"]) && isset($_PO
     $stmt->execute([$hashed_password, $token]);
 
     echo "Your password has been updated successfully!";
-    header("Location: login.php");
 } else {
     echo "Invalid request. Please try again.";
 }?> <!DOCTYPE html>

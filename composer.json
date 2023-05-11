@@ -1,5 +1,10 @@
 {
+    "autoload": {
+        "psr-4": {
+            "PrompTopia\\Framework\\": "src/PrompTopia/Framework"
+        }
+    },
     "require": {
-        "sendgrid/sendgrid": "^8.0"
+        "sendgrid/sendgrid": "^7"
     }
 }

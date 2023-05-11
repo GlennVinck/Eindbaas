@@ -1,12 +1,12 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
+include_once (__DIR__ . "bootstrap.php");
 
 use SendGrid\Mail\Mail;
 
 // DB connection
 $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
 
-// check of form gesubmit is en de POST van email gezet is (isset)
+// check of form gesubmit is en de email is gezet (isset)
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
     $username = $_POST["email"];
     
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
     
     
 
-    $sendgrid = new \SendGrid('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');
+    $sendgrid = new \SendGrid('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');
     try {
         $response = $sendgrid->send($email);
         $success_message = "An email has been sent to your email address with instructions on how to reset your password.";
@@ -113,9 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
 <body>
     <?php include_once "assets/topnav.php"; ?>
     <h1 style="margin:100px;">Forgot Password</h1>
-    <p>Enter the email associated with your account 
-    and we'll send an email with instructions to 
-    reset your password.</p>
 
     <?php if (!empty($success_message)): ?>
     <p><?php echo $success_message; ?></p>

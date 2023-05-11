@@ -1,4 +1,6 @@
 <?php
+include_once (__DIR__ . "bootstrap.php");
+
 function canLogin ($email, $password) {
     $conn = new PDO('mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas', "ID394672_eindbaas", "Eindbaas123");
 
