@@ -1,21 +1,41 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
+$config = parse_ini_file( "config/config.ini");
+
+use Cloudinary\Cloudinary;
+use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
+
+//aanmaken van cloudinary
+$cloudinary = new Cloudinary(
+    [
+        'cloud' => [
+            'cloud_name'=> $config['cloud_name'],
+            'api_key'=> $config['api_key'],
+            'api_secret'=> $config['api_secret'],
+        ],
+    ]
+);
+
+$cloudinary->uploadApi()->upload(
+    'https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg',
+    ['public_id' => 'olympic_flag']
+);
+
+
 
 if(!empty($_POST)){
-    //prompt uit de form halen
-    $title = $_POST["title"];
-    $prompt = $_POST["prompt"];
-
-    $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-    $statement = $conn->prepare("insert into prompts (title, prompt) values (:title, :prompt)");
-    $statement->bindValue(":title", $title);
-    $statement->bindValue(":prompt", $prompt);
-    $statement->execute();
-    $prompts = \PrompTopia\Framework\Prompt::getAll();
+    $prompt = new \PrompTopia\Framework\Prompt();
+    $prompt->setTitle($_POST["title"]);
+    $prompt->setPrompt($_POST["prompt"]);
+    $prompt->setImg($_POST["img"]);
+    $prompt->setPrice($_POST["price"]);
+    $prompt->setType($_POST["type"]);
+    $prompt->setTags($_POST["tags"]);
+    $prompt->save();
+    $prompt -> getAll();
 }
 
 $prompts = \PrompTopia\Framework\Prompt::getAll();
-
 
 ?>
 
@@ -40,6 +60,14 @@ $prompts = \PrompTopia\Framework\Prompt::getAll();
         <input type="text" id="title" name="title">
         <label for="prompt">Prompt</label>
         <input type="text" id="prompt" name="prompt">
+        <label for="img">Selecteer een bestand:</label>
+        <input type="file" name="img" id="img">
+        <label for="price">Prijs</label>
+        <input type="valuta" id="price" name="price">
+        <label for="type">Waar voerde je dit prompt in?</label>
+        <input type="text" id="type" name="type">
+        <label for="tags">Free tags</label>
+        <input type="text" id="tags" name="tags">
         <input type="submit" value="Post" class="btn">
     </form>
    
@@ -47,7 +75,11 @@ $prompts = \PrompTopia\Framework\Prompt::getAll();
         <?php foreach($prompts as $prompt): ?>
             <div class="prompt">
                 <h2><?php echo $prompt["title"]; ?></h2>
-                <p><?php echo $prompt["prompt"]; ?></p>
+                <h3><?php echo $prompt["prompt"]; ?></h3>
+                <img src="<?php echo $cloudinary->image('olympic_flag')->resize(Resize::fill(100, 150))->toUrl();?>" alt="">
+                <p><?php echo $prompt["price"]; ?></p>
+                <p><?php echo $prompt["type"]; ?></p>
+                <p><?php echo $prompt["tags"]; ?></p>
             </div>
         <?php endforeach; ?>
     </div>
