@@ -11,12 +11,21 @@ class Prompt
     private $type;
     private $tags;
 
-    public static function getAll()
+    public static function getAll($offset = 0)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from prompts ORDER BY id DESC");
+        $statement = $conn->prepare("select * from prompts ORDER BY id DESC LIMIT 10 OFFSET :offset");
+        $statement->bindValue(":offset", (int) $offset, \PDO::PARAM_INT); 
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function countAll()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("select count(*) from prompts");
+        $statement->execute();
+        return $statement->fetchColumn();
     }
 
 

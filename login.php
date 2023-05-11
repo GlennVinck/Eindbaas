@@ -1,5 +1,5 @@
 <?php
-include_once (__DIR__ . "bootstrap.php");
+include_once (__DIR__ . "/bootstrap.php");
 
 function canLogin ($email, $password) {
     $conn = new PDO('mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas', "ID394672_eindbaas", "Eindbaas123");
@@ -28,6 +28,7 @@ if (!empty($_POST)) {
 
         if (canLogin($email, $password)) {
             session_start();
+            $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $email;
             header('Location: index.php');
             exit;

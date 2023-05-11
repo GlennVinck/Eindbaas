@@ -1,5 +1,5 @@
 <?php
-include_once (__DIR__ . "bootstrap.php");
+include_once (__DIR__ . "/bootstrap.php");
 
 if (!empty($_POST)) {
 	$test = $_POST["username"];
