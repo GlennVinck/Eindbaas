@@ -1,6 +1,21 @@
-<?php 
+<?php
+include_once (__DIR__ . "/bootstrap.php");
 
-session_start();
+if(!empty($_POST)){
+    //prompt uit de form halen
+    $title = $_POST["title"];
+    $prompt = $_POST["prompt"];
+
+    $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
+    $statement = $conn->prepare("insert into prompts (title, prompt) values (:title, :prompt)");
+    $statement->bindValue(":title", $title);
+    $statement->bindValue(":prompt", $prompt);
+    $statement->execute();
+    $prompts = \PrompTopia\Framework\Prompt::getAll();
+}
+
+$prompts = \PrompTopia\Framework\Prompt::getAll();
+
 
 ?>
 
@@ -19,5 +34,23 @@ session_start();
 <body>
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is de Homepage</h1>
+
+    <form action="" method="post">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title">
+        <label for="prompt">Prompt</label>
+        <input type="text" id="prompt" name="prompt">
+        <input type="submit" value="Post" class="btn">
+    </form>
+   
+    <div class="prompts">
+        <?php foreach($prompts as $prompt): ?>
+            <div class="prompt">
+                <h2><?php echo $prompt["title"]; ?></h2>
+                <p><?php echo $prompt["prompt"]; ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
 </body>
 </html>
