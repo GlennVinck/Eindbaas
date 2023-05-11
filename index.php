@@ -20,7 +20,7 @@ $cloudinary = new Cloudinary(
 if(!empty($_POST)){
     if(isset($_FILES['img'])){
         try{
-            $img = new \PrompTopia\Framework\mg($cloudinary);
+            $img = new \PrompTopia\Framework\Img($cloudinary);
             $imgName = $img->upload($_FILES['img']);
             $prompt = new \PrompTopia\Framework\Prompt();
             $prompt->setTitle($_POST["title"]);
