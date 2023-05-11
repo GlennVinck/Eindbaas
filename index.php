@@ -16,23 +16,31 @@ $cloudinary = new Cloudinary(
     ]
 );
 
-$cloudinary->uploadApi()->upload(
-    'https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg',
-    ['public_id' => 'olympic_flag']
-);
-
-
 
 if(!empty($_POST)){
-    $prompt = new \PrompTopia\Framework\Prompt();
-    $prompt->setTitle($_POST["title"]);
-    $prompt->setPrompt($_POST["prompt"]);
-    $prompt->setImg($_POST["img"]);
-    $prompt->setPrice($_POST["price"]);
-    $prompt->setType($_POST["type"]);
-    $prompt->setTags($_POST["tags"]);
-    $prompt->save();
-    $prompt -> getAll();
+    if(isset($_FILES['img'])){
+        try{
+            $img = new \PrompTopia\Framework\mg($cloudinary);
+            $imgName = $img->upload($_FILES['img']);
+            $prompt = new \PrompTopia\Framework\Prompt();
+            $prompt->setTitle($_POST["title"]);
+            $prompt->setPrompt($_POST["prompt"]);
+            $prompt->setImg($imgName);
+            $prompt->setPrice($_POST["price"]);
+            $prompt->setType($_POST["type"]);
+            $prompt->setTags($_POST["tags"]);
+            $prompt->save();
+            $prompt -> getAll();
+        }
+        catch (Throwable $e) {
+            $error = $e->getMessage();
+        }
+        
+    } else {
+        $error = "Please upload an image";
+    }
+    
+    
 }
 
 $prompts = \PrompTopia\Framework\Prompt::getAll();
@@ -55,20 +63,42 @@ $prompts = \PrompTopia\Framework\Prompt::getAll();
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is de Homepage</h1>
 
-    <form action="" method="post">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title">
-        <label for="prompt">Prompt</label>
-        <input type="text" id="prompt" name="prompt">
-        <label for="img">Selecteer een bestand:</label>
-        <input type="file" name="img" id="img">
-        <label for="price">Prijs</label>
-        <input type="valuta" id="price" name="price">
-        <label for="type">Waar voerde je dit prompt in?</label>
-        <input type="text" id="type" name="type">
-        <label for="tags">Free tags</label>
-        <input type="text" id="tags" name="tags">
-        <input type="submit" value="Post" class="btn">
+    <form action="" method="post" enctype="multipart/form-data">
+        <?php if(isset($error)): ?>
+            <div class="error"><?php echo $error; ?></div>
+        <?php endif; ?> 
+        <div class="prompt_field">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title">
+        </div>
+        <div class="prompt_field"> 
+            <label for="prompt">Prompt</label>
+            <input type="text" id="prompt" name="prompt">
+        </div>
+        <div class="prompt_field">
+            <label for="img">Selecteer een bestand:</label>
+            <input type="file" name="img" id="img">
+        </div>
+        <div class="prompt_field"> 
+            <label for="price">Prijs</label>
+            <select name="price" id="price">
+                <option value="free">Free</option>
+                <option value="1credit">1 credit</option>
+                <option value="2credits">2 credits</option>
+            </select>
+        </div>
+       <div class="prompt_field">  
+            <label for="type">Waar voerde je dit prompt in?</label>
+            <input type="text" id="type" name="type">
+        </div>
+       <div class="prompt_field">
+            <label for="tags">Free tags</label>
+            <input type="text" id="tags" name="tags">
+        </div>
+        <div class="prompt_field" >
+            <input type="submit" value="Post" class="btn">
+        </div>
+        
     </form>
    
     <div class="prompts">
@@ -76,7 +106,7 @@ $prompts = \PrompTopia\Framework\Prompt::getAll();
             <div class="prompt">
                 <h2><?php echo $prompt["title"]; ?></h2>
                 <h3><?php echo $prompt["prompt"]; ?></h3>
-                <img src="<?php echo $cloudinary->image('olympic_flag')->resize(Resize::fill(100, 150))->toUrl();?>" alt="">
+                <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
                 <p><?php echo $prompt["price"]; ?></p>
                 <p><?php echo $prompt["type"]; ?></p>
                 <p><?php echo $prompt["tags"]; ?></p>
