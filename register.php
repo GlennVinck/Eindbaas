@@ -9,13 +9,8 @@ if (!empty($_POST)) {
 		$user->setPassword($_POST["password"]);
 	
 		$user->save();
-		header('Location: login.php');
-	} catch (\Throwable $th) {
-		$error = $th->getMessage();
-	}
-}
 
-$email = new \SendGrid\Mail\Mail(); 
+		$email = new \SendGrid\Mail\Mail(); 
 $email->setFrom("promptopia6@gmail.com", "PrompTopia");
 $email->setSubject("Welcome to PrompTopia");
 $email->addTo($_POST["email"]);
@@ -31,6 +26,14 @@ try {
 } catch (Exception $e) {
     echo 'Caught exception: '. $e->getMessage() ."\n";
 }
+
+		header('Location: login.php');
+	} catch (\Throwable $th) {
+		$error = $th->getMessage();
+	}
+}
+
+
 
 
 ?>
