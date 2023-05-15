@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
     
     
 
-    $sendgrid = new \SendGrid('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');
+    $sendgrid = new \SendGrid('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');
     try {
         $response = $sendgrid->send($email);
         $success_message = "An email has been sent to your email address with instructions on how to reset your password.";

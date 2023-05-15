@@ -17,7 +17,7 @@ $email->addTo($_POST["email"]);
 $email->addContent(
     "text/html",
     "Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Best,<br>PrompTopia");
-$sendgrid = new \SendGrid('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');
+$sendgrid = new \SendGrid('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');
 try {
     $response = $sendgrid->send($email);
     print $response->statusCode() . "\n";
