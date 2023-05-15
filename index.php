@@ -39,8 +39,8 @@ if(!empty($_POST)){
             $prompt->save();
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             $offset = ($page - 1) * 10;
-            $prompts->getAll($offset);
-            $totalPrompts->countAll();
+            $prompts = \PrompTopia\Framework\Prompt::getAll($offset);
+            $totalPrompts = \PrompTopia\Framework\Prompt::countAll();
             $totalPages = ceil($totalPrompts / 10);
         }
         catch (Throwable $e) {
