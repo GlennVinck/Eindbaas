@@ -50,12 +50,7 @@ if(!empty($_POST)){
     } else {
         $error = "Please upload an image";
     }
-    
-    $isAdmin = false;
-    if (isset($_SESSION['id'])) {
-        $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
-    }
-    
+   
 }
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
@@ -63,6 +58,11 @@ $offset = ($page - 1) * 10;
 $prompts = \PrompTopia\Framework\Prompt::getAll($offset);
 $totalPrompts = \PrompTopia\Framework\Prompt::countAll();
 $totalPages = ceil($totalPrompts / 10);
+
+$isAdmin = false;
+if (isset($_SESSION['id'])) {
+    $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
+}
 
 ?>
 
