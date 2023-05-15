@@ -13,10 +13,14 @@
             </button>
         </div>
         <ul class="topnav-menu">
+            <?php if(isset($_SESSION['id']) && \PrompTopia\Framework\User::isAdmin()){
+                    echo '<li class="topnav-menu-item"><a href="admin.php">Admin</a></li>';
+                }
+            ?>
             <li class="topnav-menu-item"><a href="marketplace.php">Marketplace</a></li>
             <?php
             // check if user is logged in
-            if (isset($_SESSION['username'])) {
+            if (isset($_SESSION['id'])) {
                 // display "My Profile" and "Log out" link
                 echo '<li class="topnav-menu-item"><a href="profile.php">My Profile</a></li>';
                 echo '<li class="topnav-menu-item"><a href="logout.php">Log Out</a></li>';
