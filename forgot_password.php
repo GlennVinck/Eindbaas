@@ -1,5 +1,8 @@
 <?php
-include_once (__DIR__ . "bootstrap.php");
+include_once (__DIR__ . "/bootstrap.php");
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 use SendGrid\Mail\Mail;
 
@@ -11,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
     $username = $_POST["email"];
     
     // check if the user exists in de DB
-    $stmt = $conn->prepare("SELECT id, username FROM users WHERE username = :username");
-    $stmt ->bindParam(':username', $username, PDO::PARAM_STR);
+    $stmt = $conn->prepare("SELECT id, email FROM users WHERE email = :email");
+    $stmt ->bindParam(':email', $username, PDO::PARAM_STR);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$user) {
