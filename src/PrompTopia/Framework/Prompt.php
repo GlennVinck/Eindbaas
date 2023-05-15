@@ -128,4 +128,13 @@ public function getPrice()
         $result = $statement->execute();
         return $result;
     }
+
+    public static function notApproved()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE approved = 0");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

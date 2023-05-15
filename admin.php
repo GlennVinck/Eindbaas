@@ -1,5 +1,25 @@
 <?php 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include_once (__DIR__ . "/bootstrap.php");
+$config = parse_ini_file( "config/config.ini");
+
+use Cloudinary\Cloudinary;
+use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
+
+//aanmaken van cloudinary
+$cloudinary = new Cloudinary(
+    [
+        'cloud' => [
+            'cloud_name'=> $config['cloud_name'],
+            'api_key'=> $config['api_key'],
+            'api_secret'=> $config['api_secret'],
+        ],
+    ]
+);
+
+$notApproved = \PrompTopia\Framework\Prompt::notApproved()
 
 ?>
 <!DOCTYPE html>
@@ -17,5 +37,18 @@ include_once (__DIR__ . "/bootstrap.php");
 <body>
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is de admin page</h1>
+<div class="prompts">
+            <?php if(!empty($notApproved)) {
+                foreach($notApproved as $prompt):?>            
+                    <div class="prompt">
+                        <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2>
+                        <h3><?php echo htmlspecialchars( $prompt["prompt"]); ?></h3>
+                        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
+                        <p><?php echo $prompt["price"]; ?></p>
+                        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
+                        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+                    </div>
+        <?php endforeach; }?>
+    </div>
 </body>
 </html>
