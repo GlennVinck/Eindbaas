@@ -1,42 +1,33 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-function canLogin ($email, $password) {
-    $conn = new PDO('mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas', "ID394672_eindbaas", "Eindbaas123");
+if (!empty($_POST)) {
+    $email = $_POST["email"];
+    $password = $_POST["password"];
 
-    $statement = $conn->prepare("SELECT * FROM users WHERE username = :email");
+    // Query the database to find a user with the provided email
+    $conn = new PDO('mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas', "ID394672_eindbaas", "Eindbaas123");
+    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
     $statement->bindValue(":email", $email);
     $statement->execute();
-    $user = $statement->fetch();
-    $hash = $user['password'];
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($user !== false && password_verify($password, $hash)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-if (!empty($_POST)) {
-    $email = $_POST['username'];
-    $password = $_POST['password'];
-
-    try {
-        if (empty($email) || empty($password)) {
-            throw new Exception('Please enter both email and password');
-        }
-
-        if (canLogin($email, $password)) {
+    if ($user) {
+        // Verify the password
+        if (password_verify ($password, $user["password"])) {
+            // Password is correct, log in the user
             session_start();
+            // set session variables
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $email;
-            header('Location: index.php');
-            exit;
+            $_SESSION["id"] = $user["id"];
+            // Redirect the user to a logged-in page
+            header("Location: index.php");
         } else {
-            throw new Exception('Invalid email or password');
+            $error = "Invalid email or password";
         }
-    } catch (Exception $e) {
-        $error = $e->getMessage();
+    } else {
+        $error = "both fields are required";
     }
 }
 
@@ -64,15 +55,13 @@ if (!empty($_POST)) {
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">
-						<p>
-							Sorry, we can't log you in with that email address and password. Can you try again?
-						</p>
+						<?php echo $error; ?>
 					</div>
 				<?php endif; ?>
 
 				<div class="form__field">
 					<label for="Email">Email</label>
-					<input type="text" id="username" name="username">
+					<input type="text" id="email" name="email">
 				</div>
 				<div class="form__field">
 					<label for="Password">Password</label>

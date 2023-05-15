@@ -2,50 +2,23 @@
 include_once (__DIR__ . "/bootstrap.php");
 
 if (!empty($_POST)) {
-	$test = $_POST["username"];
-    $password = $_POST["password"];
-    $errors = array();
-
-	// Check if email and/or password are not empty
-    if (empty($test) || empty($password)) {
-        $errors[] = "Email and password are required.";
-    }
-
-    // Validate the email address
-    if (!filter_var($test, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Invalid email address.";
-    }
-
-    // Check if the password has at least one capital letter
-    if (!preg_match('/[A-Z]/', $password)) {
-        $errors[] = "Password must contain at least one capital letter.";
-    }
-
-    $options = [
-        'cost' => 12,
-    ];
-    $password = password_hash($password, PASSWORD_DEFAULT, $options);
-
-    try {
-        $conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-        
-		
-		if (empty($errors)) {
-            $query = $conn->prepare("insert into users (username, password) values (:email, :password)");
-            $query->bindValue(":email", $test);
-            $query->bindValue(":password", $password);
-            $query->execute();
-
-            header("Location: login.php");
-        } 
-	} catch (Throwable $error) {
-        echo $error->getMessage();
-    }
+	try {
+		$user = new \PrompTopia\Framework\User();
+		$user->setUsername($_POST["username"]);
+		$user->setEmail($_POST["email"]);
+		$user->setPassword($_POST["password"]);
+	
+		$user->save();
+		header('Location: login.php');
+	} catch (\Throwable $th) {
+		$error = $th->getMessage();
+	}
+}
 
 $email = new \SendGrid\Mail\Mail(); 
 $email->setFrom("promptopia6@gmail.com", "PrompTopia");
 $email->setSubject("Welcome to PrompTopia");
-$email->addTo($_POST["username"]);
+$email->addTo($_POST["email"]);
 $email->addContent(
     "text/html",
     "Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Best,<br>PrompTopia");
@@ -59,7 +32,6 @@ try {
     echo 'Caught exception: '. $e->getMessage() ."\n";
 }
 
-}
 
 ?>
 <!DOCTYPE html>
@@ -84,18 +56,20 @@ try {
 				<h2 class="form-title">Create Your Account</h2>
 				<h3 class="form-subtitle">Enter your credentials to create your account</h2>
 
-				<?php if (!empty($errors)): ?>
-   					<div class="form__error">
-        				<?php foreach ($errors as $error): ?>
-            				<p><?php echo $error; ?></p>
-						<?php endforeach; ?>
-    				</div>
+
+				<?php if( isset($error) ):?>
+					<div class="form__error">
+						<?php echo $error; ?>
+					</div>
 				<?php endif; ?>
 
+				<div class="form__field">
+					<label for="Username">Username</label>
+					<input type="text" id="username" name="username">	
 
 				<div class="form__field">
 					<label for="Email">Email</label>
-					<input type="text" name="username">
+					<input type="text" id="email" name="email">
 				</div>
 				<div class="form__field">
 					<label for="Password">Password</label>

@@ -2,6 +2,9 @@
 include_once (__DIR__ . "/bootstrap.php");
 $config = parse_ini_file( "config/config.ini");
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if($_SESSION['loggedin'] !== true){
     header('Location: notloggedin.php');
 }
@@ -48,6 +51,10 @@ if(!empty($_POST)){
         $error = "Please upload an image";
     }
     
+    $isAdmin = false;
+    if (isset($_SESSION['id'])) {
+        $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
+    }
     
 }
 
@@ -74,6 +81,15 @@ $totalPages = ceil($totalPrompts / 10);
 <body>
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is de Homepage</h1>
+
+    <?php
+    // Display the admin status if the user is logged in
+    if ($isAdmin) {
+        echo "<p>Welcome, you are an admin!</p>";
+    } else {
+        echo "<p>Welcome, you are not an admin.</p>";
+    }
+    ?>
 
     <form action="" method="post" enctype="multipart/form-data">
         <?php if(isset($error)): ?>
