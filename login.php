@@ -1,34 +1,20 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-if (!empty($_POST)) {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
 
-    // Query the database to find a user with the provided email
-    $conn = new PDO('mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas', "ID394672_eindbaas", "Eindbaas123");
-    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
-    $statement->bindValue(":email", $email);
-    $statement->execute();
-    $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-    if ($user) {
-        // Verify the password
-        if (password_verify ($password, $user["password"])) {
-            // Password is correct, log in the user
-            session_start();
-            // set session variables
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $email;
-            $_SESSION["id"] = $user["id"];
-            // Redirect the user to a logged-in page
-            header("Location: index.php");
-        } else {
-            $error = "Invalid email or password";
-        }
-    } else {
-        $error = "both fields are required";
-    }
+if(!empty($_POST)) {
+    try {
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+        $user = \PrompTopia\Framework\User::login($email, $password);
+            if($user) {
+                exit();
+            } else {
+                $error = "Username or password is incorrect";
+            }
+	} catch (\Throwable $th) {
+		$error = $th->getMessage();
+	}
 }
 
 ?><!DOCTYPE html>

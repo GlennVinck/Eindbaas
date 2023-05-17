@@ -90,6 +90,43 @@ class User
         return $result;
     }
 
+    public static function login($email, $password)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        
+        $result = $statement->execute();
+
+        if($result) {
+            $user = $statement->fetch(\PDO::FETCH_ASSOC);
+            if($user) {
+                $hash = $user['password'];
+                if(password_verify($password, $hash)) {
+
+                    session_start();
+
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['username'] = $email;
+                    $_SESSION["id"] = $user["id"];
+
+                    header("Location: index.php");
+                    
+                    exit();
+                } else {
+                    return false;
+
+                }
+            } else {
+                return false;
+
+            }
+        } else {
+            return false;
+
+        }
+    }
+    
     
     public static function isAdmin()
     {

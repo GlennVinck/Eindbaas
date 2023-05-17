@@ -35,20 +35,24 @@ $notApproved = \PrompTopia\Framework\Prompt::notApproved()
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<?php include_once "assets/topnav.php"; ?>
-<h1 style="margin:100px;">Dit is de admin page</h1>
-<div class="prompts">
-            <?php if(!empty($notApproved)) {
-                foreach($notApproved as $prompt):?>            
-                    <div class="prompt">
-                        <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2>
-                        <h3><?php echo htmlspecialchars( $prompt["prompt"]); ?></h3>
-                        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
-                        <p><?php echo $prompt["price"]; ?></p>
-                        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-                        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
-                    </div>
-        <?php endforeach; }?>
-    </div>
+    <?php include_once "assets/topnav.php"; ?>
+    <h1 style="margin:100px;">Dit is de admin page</h1>
+        <h2>Prompts to approve</h2>
+            <div class="prompts">
+            <?php if (!empty($notApproved)) :
+                foreach ($notApproved as $prompt) :?>
+                <div class="prompt">
+                    <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
+                    <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
+                    <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl(); ?>" alt="">
+                    <p><?php echo $prompt["price"]; ?></p>
+                    <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
+                    <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+                </div>
+            <?php endforeach;
+            else: ?>
+                <h3>There are no prompts to approve</h3>
+            <?php endif; ?>
+            </div>
 </body>
 </html>
