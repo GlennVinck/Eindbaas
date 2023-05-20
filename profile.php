@@ -17,13 +17,25 @@ if (isset($_POST['deleteUser'])) {
     exit();
 }
 
+
+
 if (isset($_POST['changeUsername'])) {
     $user = new \PrompTopia\Framework\User();
     $newUsername = $_POST['newUsername'];
-    try {
-        $user->changeUsername($newUsername);
-    } catch (\Exception $e) {
-        $error = $e->getMessage();
+
+    $username = $_SESSION["username"];
+
+    // Check if the new username already exists
+    if ($newUsername != $username && \PrompTopia\Framework\User::usernameExists($newUsername)) {
+        $error = "Username already exists. Please choose a different username.";
+    } else {
+        try {
+            $user->changeUsername($newUsername);
+            $success = "Username changed successfully.";
+        } catch (\Exception $e) {
+            $error = $e->getMessage();
+        }
+
     }
 }
 
@@ -113,6 +125,14 @@ if (isset($_POST['saveBiography'])) {
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is jouw profiel</h1>
 <h1 style="margin:100px;">Hello <?php echo $_SESSION["username"];?></h1>
+
+<?php if (isset($error)): ?>
+    <p style="color: red; font-weight: 800;">Error: <?php echo $error; ?></p>
+<?php endif; ?>
+<?php if (isset($success)): ?>
+        <p style="color: lime; font-weight: 800;"> Success: <?php echo $success; ?></p>
+    <?php endif; ?>
+
 <form action="profile.php" method="POST">
     <label for="newUsername">Change Username:</label>
     <input type="text" id="newUsername" name="newUsername" required>
@@ -142,9 +162,7 @@ if (isset($_POST['saveBiography'])) {
 
 
 
-<?php if (isset($error)): ?>
-    <p>Error: <?php echo $error; ?></p>
-<?php endif; ?>
+
 
 
 <form action="" method="POST">
