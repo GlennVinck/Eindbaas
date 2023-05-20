@@ -136,6 +136,19 @@ class User
         // Get the database connection-
         $conn = Db::getInstance();
 
+
+
+        // Check if username or email already exists
+    $statement = $conn->prepare("SELECT id FROM users WHERE username = :username OR email = :email");
+    $statement->bindValue(":username", $this->getUsername());
+    $statement->bindValue(":email", $this->getEmail());
+    $statement->execute();
+    $existingUser = $statement->fetch(\PDO::FETCH_ASSOC);
+
+    if ($existingUser) {
+        throw new \Exception("Username or email already exists. Please choose a different one.");
+    }
+
         // Prepare the query
         $statement = $conn->prepare("insert into users (username, email, password) values (:username, :email, :password)");
 
@@ -236,4 +249,28 @@ class User
         $statement->bindValue(":id", $_SESSION['id']);
         $statement->execute();
     }
+
+
+
+    public static function usernameExists($username)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE username = :username");
+    $statement->bindValue(":username", $username);
+    $statement->execute();
+    $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+    return $result['count'] > 0;
+}
+
+public static function emailExists($email)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE email = :email");
+    $statement->bindValue(":email", $email);
+    $statement->execute();
+    $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+    return $result['count'] > 0;
+}
 }

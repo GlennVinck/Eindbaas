@@ -3,6 +3,22 @@ include_once (__DIR__ . "/bootstrap.php");
 
 if (!empty($_POST)) {
 	try {
+
+		$username = $_POST["username"]; // Retrieve the username from $_POST
+        $email = $_POST["email"]; // Retrieve the email from $_POST
+
+
+// Check if username already exists
+if (\PrompTopia\Framework\User::usernameExists($username)) {
+	throw new \Exception("Username already exists. Please choose a different username.");
+}
+
+// Check if email already exists
+if (\PrompTopia\Framework\User::emailExists($email)) {
+	throw new \Exception("Email already exists. Please use a different email address.");
+}
+
+
 		$user = new \PrompTopia\Framework\User();
 		$user->setUsername($_POST["username"]);
 		$user->setEmail($_POST["email"]);
