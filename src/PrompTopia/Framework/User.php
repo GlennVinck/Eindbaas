@@ -8,6 +8,17 @@ class User
     private $email;
     private $password;
 
+    private $profilePicture;
+
+    private $biography;
+
+
+
+
+
+
+
+
 
     public function getUsername()
     {
@@ -67,6 +78,59 @@ class User
         $this->password = password_hash($password, PASSWORD_DEFAULT, $options);
         return $this;
     }
+    
+    public function setProfilePicture($imagePath)
+    {
+        // Update the profile picture in the database
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET profile_picture = :profilePicture WHERE id = :id");
+        $statement->bindValue(":profilePicture", $imagePath);
+        $statement->bindValue(":id", $_SESSION['id']);
+        $result = $statement->execute();
+
+        return $result;
+    }
+
+    public function getProfilePicture()
+    {
+        // Get the profile picture from the database
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT profile_picture FROM users WHERE id = :id");
+        $statement->bindValue(":id", $_SESSION['id']);
+
+        $statement->execute();
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $row ? $row['profile_picture'] : null;
+    }
+
+    public function getBiography()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT biography FROM users WHERE id = :id");
+        $statement->bindValue(":id", $_SESSION['id']);
+
+        $statement->execute();
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $row ? $row['biography'] : null;
+    }
+
+    public function setBiography($biography)
+    {
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET biography = :biography WHERE id = :id");
+    $statement->bindValue(":biography", $biography);
+    $statement->bindValue(":id", $_SESSION['id']);
+    $result = $statement->execute();
+
+    if (!$result) {
+        throw new \Exception("Failed to update biography in the database.");
+    }
+
+    $this->biography = $biography;
+    return $this;
+}
 
     public function save() {
         // Get the database connection-
@@ -89,6 +153,28 @@ class User
 
         return $result;
     }
+
+    public function changeUsername($newUsername)
+    {
+        if (empty($newUsername)) {
+            throw new \Exception("Username cannot be empty");
+        }
+
+        // Update the username in the database
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE users SET username = :newUsername WHERE id = :id");
+        $statement->bindValue(":newUsername", $newUsername);
+        $statement->bindValue(":id", $_SESSION['id']);
+        $result = $statement->execute();
+
+        if ($result) {
+            $this->username = $newUsername;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static function login($email, $password)
     {
