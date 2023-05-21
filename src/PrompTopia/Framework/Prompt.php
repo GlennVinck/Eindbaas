@@ -4,24 +4,27 @@ namespace PrompTopia\Framework;
 
 class Prompt
 {
-    private $promptId;
+    private $id;
     private $title;
     private $prompt;
     private $img;
     private $price;
     private $type;
     private $tags;
+    private $categories;
+
+    
 
 
-    public function getpromptId()
+    public function getId()
     {
-        return $this->promptId;
+        return $this->id;
     }
 
  
-    public function setpromptId($promptId)
+    public function setId($id)
     {
-        $this->promptId = $promptId;
+        $this->id = $id;
 
         return $this;
     }
@@ -130,6 +133,24 @@ public function getPrice()
         return $this;
     }
 
+ 
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+
+    public function setCategories($categories)
+    {
+        if(empty($categories)) {
+            throw new \Exception("Please choose a category");
+        } else {
+            $this->categories = $categories;
+        }
+
+        return $this;
+    }
+
 
     public function save(){
         $conn = Db::getInstance();
@@ -152,5 +173,22 @@ public function getPrice()
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }  
+
+    public static function approvePrompt($id)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE prompts SET approved = 1 WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+    }
+
+    public static function categories()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM categories");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 
 }
