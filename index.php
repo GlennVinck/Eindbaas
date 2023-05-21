@@ -23,6 +23,7 @@ $cloudinary = new Cloudinary(
     ]
 );
 
+$categories = \PrompTopia\Framework\Prompt::categories();
 
 if(!empty($_POST)){
     if(isset($_FILES['img'])){
@@ -123,6 +124,14 @@ if (isset($_SESSION['id'])) {
             <label for="tags">Free tags</label>
             <input type="text" id="tags" name="tags">
         </div>
+        <ul class="items">
+        <?php foreach($categories as $categorie):?>
+            <li>
+                <input name="categories[]" type="checkbox" value="<?php echo $categorie["id"]?>" /> 
+                <?php echo $categorie["name"]?> 
+            </li>
+        <?php endforeach;?>
+    </ul>
         <div class="prompt_field" >
             <input type="submit" value="Post" class="btn">
         </div>
