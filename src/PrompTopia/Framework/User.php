@@ -273,4 +273,58 @@ public static function emailExists($email)
 
     return $result['count'] > 0;
 }
+
+public function checkPassword($oldPassword)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT password FROM users WHERE id = :id");
+    $statement->bindValue(":id", $_SESSION['id']);
+
+    $result = $statement->execute();
+
+    if($result) {
+        $user = $statement->fetch(\PDO::FETCH_ASSOC);
+        echo $user['password'];
+        if($user) {
+            $hash = $user['password'];
+            if(password_verify($oldPassword, $hash)) {
+                return true;
+            } else {
+                throw new \Exception("Old password is not correct.");
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+
+    }
+}
+
+public function changePassword($newPassword1, $newPassword2)
+{
+    if ($newPassword1 !== $newPassword2) {
+        throw new \Exception("The new passwords do not match.");
+    }
+
+    $user = new User();
+    $user->setPassword($newPassword1);
+
+    // Get the hashed password using the getPassword method
+    $newPasswordHash = $user->getPassword();
+
+    // Update the password in the database
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET password = :newPassword WHERE id = :id");
+    $statement->bindValue(":newPassword", $newPasswordHash);
+    $statement->bindValue(":id", $_SESSION['id']);
+    $result = $statement->execute();
+
+    if (!$result) {
+        throw new \Exception("Failed to update the password in the database.");
+    }
+}
+
+
+
 }

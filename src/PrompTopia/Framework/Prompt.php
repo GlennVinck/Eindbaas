@@ -4,12 +4,27 @@ namespace PrompTopia\Framework;
 
 class Prompt
 {
+    private $promptId;
     private $title;
     private $prompt;
     private $img;
     private $price;
     private $type;
     private $tags;
+
+
+    public function getpromptId()
+    {
+        return $this->promptId;
+    }
+
+ 
+    public function setpromptId($promptId)
+    {
+        $this->promptId = $promptId;
+
+        return $this;
+    }
 
     public static function getAll($offset = 0)
     {
@@ -136,5 +151,6 @@ public function getPrice()
         $statement->execute();
         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
-    }
+    }  
+
 }

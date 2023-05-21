@@ -19,7 +19,7 @@ $cloudinary = new Cloudinary(
     ]
 );
 
-$notApproved = \PrompTopia\Framework\Prompt::notApproved()
+$notApproved = \PrompTopia\Framework\Prompt::notApproved();
 
 ?>
 <!DOCTYPE html>

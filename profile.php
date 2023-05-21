@@ -21,8 +21,8 @@ if (isset($_POST['deleteUser'])) {
 
 if (isset($_POST['changeUsername'])) {
     $user = new \PrompTopia\Framework\User();
-    $newUsername = $_POST['newUsername'];
 
+    $newUsername = $_POST['newUsername'];
     $username = $_SESSION["username"];
 
     // Check if the new username already exists
@@ -36,6 +36,22 @@ if (isset($_POST['changeUsername'])) {
             $error = $e->getMessage();
         }
 
+    }
+}
+
+if (isset($_POST['changePassword'])) {
+    $user = new \PrompTopia\Framework\User();
+
+    $oldPassword = $_POST['oldPassword'];
+    $newPassword1 = $_POST['newPassword1'];
+    $newPassword2 = $_POST['newPassword2'];
+
+    try {
+        $user->checkPassword($oldPassword);
+        $user->changePassword($newPassword1, $newPassword2);
+        $success = "Password changed successfully.";
+    } catch (\Exception $e) {
+        $error = $e->getMessage();
     }
 }
 
@@ -131,7 +147,7 @@ if (isset($_POST['saveBiography'])) {
 <?php endif; ?>
 <?php if (isset($success)): ?>
         <p style="color: lime; font-weight: 800;"> Success: <?php echo $success; ?></p>
-    <?php endif; ?>
+<?php endif; ?>
 
 <form action="profile.php" method="POST">
     <label for="newUsername">Change Username:</label>
@@ -156,6 +172,20 @@ if (isset($_POST['saveBiography'])) {
     <textarea id="biography" name="biography"><?php echo $biography; ?></textarea>
     <button type="submit" name="saveBiography">Change</button>
 </form>
+
+<form action="" method="POST">
+  <label for="oldPassword">Old Password:</label>
+  <input type="password" name="oldPassword" id="oldPassword" required>
+  
+  <label for="newPassword1">New Password:</label>
+  <input type="password" name="newPassword1" id="newPassword1" required>
+  
+  <label for="newPassword2">Confirm New Password:</label>
+  <input type="password" name="newPassword2" id="newPassword2" required>
+  
+  <button type="submit" name="changePassword">Change password</button>
+</form>
+
 
 </body>
 
