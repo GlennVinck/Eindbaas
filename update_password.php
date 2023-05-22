@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"]) && isset($_PO
     $password = $_POST["password"];
     $confirm_password = $_POST["confirm_password"];
 
-    // Validate the password
+    // validate the password
     if ($password != $confirm_password) {
         echo "Passwords do not match. Please try again.";
         exit;
@@ -20,10 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"]) && isset($_PO
         exit;
     }
 
-    // Hash the password
+    // hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Update the user's password in the database
+    // update the user's password in the database
     $stmt = $conn->prepare("UPDATE users SET password = ?, reset_token = NULL, reset_token_expiration = NULL WHERE reset_token = ?");
     $stmt->execute([$hashed_password, $token]);
 

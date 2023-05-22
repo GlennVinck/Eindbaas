@@ -271,6 +271,8 @@ public static function emailExists($email)
     $statement->execute();
     $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
+    
+
     return $result['count'] > 0;
 }
 

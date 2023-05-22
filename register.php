@@ -64,6 +64,53 @@ try {
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
 	<link rel="stylesheet" href="css/style.css">
+
+	<!-- ... jquery - show user if email and username is already in use! ... -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Check username availability
+  $('#username').on('input', function() {
+    var username = $(this).val();
+    $.ajax({
+      type: 'POST',
+      url: 'check_username.php',
+      data: { username: username },
+      success: function(response) {
+        if (response === 'exists') {
+          $('#username-availability').text('Username already exists. Please choose a different username.').addClass('unavailable');
+        } else {
+          $('#username-availability').text('').removeClass('unavailable');
+        }
+      }
+    });
+  });
+
+  // Check email availability
+  $('#email').on('input', function() {
+    var email = $(this).val();
+    $.ajax({
+      type: 'POST',
+      url: 'check_email.php',
+      data: { email: email },
+      success: function(response) {
+        if (response === 'exists') {
+          $('#email-availability').text('Email already exists. Please use a different email address.').addClass('unavailable');
+        } else {
+          $('#email-availability').text('').removeClass('unavailable');
+        }
+      }
+    });
+  });
+});
+</script>
+<style>
+  .unavailable {
+    color: red;
+  }
+</style>
+
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
@@ -77,7 +124,7 @@ try {
 
 
 				<?php if( isset($error) ):?>
-					<div class="form__error">
+					<div class="form__error"">
 						<?php echo $error; ?>
 					</div>
 				<?php endif; ?>
@@ -85,11 +132,15 @@ try {
 				<div class="form__field">
 					<label for="Username">Username</label>
 					<input type="text" id="username" name="username">	
+					<div id="username-availability" class="availability"></div>
+				</div>
 
 				<div class="form__field">
 					<label for="Email">Email</label>
 					<input type="text" id="email" name="email">
+					<div id="email-availability" class="availability"></div>
 				</div>
+
 				<div class="form__field">
 					<label for="Password">Password</label>
 					<input type="password" id="password" name="password">
