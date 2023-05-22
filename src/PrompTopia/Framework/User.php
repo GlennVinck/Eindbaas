@@ -326,5 +326,21 @@ public function changePassword($newPassword1, $newPassword2)
 }
 
 
+public function checkResetToken($token) {
+        $conn = Db::getInstance(); // Get the database connection
+    
+        // Code to check if the token exists and is not expired
+        $stmt = $conn->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_token_expiration > ?");
+        $stmt->execute([$token, date("Y-m-d H:i:s")]);
+        $user = $stmt->fetch();
+    
+        // Return the fetched user or null if not found
+        return $user;
+    }
+    
+
+
+
+
 
 }

@@ -1,18 +1,15 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-$conn = new PDO("mysql:host=ID394672_eindbaas.db.webhosting.be;dbname=ID394672_eindbaas", "ID394672_eindbaas", "Eindbaas123");
-
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["token"])) {
     $token = $_GET["token"];
-
     // Check if the token exists and is not expired
-    $stmt = $conn->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_token_expiration > ?");
-    $stmt->execute([$token, date("Y-m-d H:i:s")]);
-    $user = $stmt->fetch();
+    $user = new \PrompTopia\Framework\User();
+    $checkResetToken = $user->checkResetToken($token);
 
+
+// Token is valid, show the reset password form
     if ($user) {
-        // Token is valid, show the reset password form
         ?><!DOCTYPE html>
         <html lang="en">
         <head>
