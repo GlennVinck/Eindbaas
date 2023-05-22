@@ -260,6 +260,7 @@ class User
     $statement->execute();
     $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
+    //retourneert [TRUE] als er maar dan 0 zijn. Anders [FALSE] === geen users met deze username in database
     return $result['count'] > 0;
 }
 
@@ -271,8 +272,7 @@ public static function emailExists($email)
     $statement->execute();
     $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-    
-
+    //retourneert [TRUE] als er maar dan 0 zijn. Anders [FALSE] === geen users met deze email in database
     return $result['count'] > 0;
 }
 

@@ -8,7 +8,7 @@ if(!isset($_SESSION['username'])) {
 
 
 
-
+// Delete account
 if (isset($_POST['deleteUser'])) {
     $user = new \PrompTopia\Framework\User();
     $user->deleteUser();
@@ -19,6 +19,8 @@ if (isset($_POST['deleteUser'])) {
 
 
 
+
+// Change Username
 if (isset($_POST['changeUsername'])) {
     $user = new \PrompTopia\Framework\User();
 
@@ -27,7 +29,7 @@ if (isset($_POST['changeUsername'])) {
 
     // Check if the new username already exists
     if ($newUsername != $username && \PrompTopia\Framework\User::usernameExists($newUsername)) {
-        $error = "Username already exists. Please choose a different username.";
+        $error = "Username is already taken. Please choose a different username.";
     } else {
         try {
             $user->changeUsername($newUsername);
@@ -39,6 +41,10 @@ if (isset($_POST['changeUsername'])) {
     }
 }
 
+
+
+
+// Change password
 if (isset($_POST['changePassword'])) {
     $user = new \PrompTopia\Framework\User();
 
@@ -57,39 +63,50 @@ if (isset($_POST['changePassword'])) {
 
 
 
+
+// Profile picture
 if (isset($_POST['changeProfilePicture'])) {
+
+    // haal type bestand op 
+    //strtolower -> string to lowercase
+    // pathinfo() zorgt voor deze info (bestandsnaam & type )
     $imageFileType = strtolower(pathinfo($_FILES['newProfilePicture']['name'], PATHINFO_EXTENSION));
+    // waar de files worden opgeslagen
     $targetDir = "profile_pictures/";
+    // creeër unieke code om duplicates tegen te gaan
     $targetFile = $targetDir . uniqid() . '.' . $imageFileType;
+
+
+    // toegestaan? 1 = ja / 0 = nee (boolean)
     $uploadOk = 1;
 
-    // Check if the uploaded file is an image
+    // check of image een geldige afbeelding is getimagesize()
     $check = getimagesize($_FILES['newProfilePicture']['tmp_name']);
     if ($check === false) {
         $error = "Invalid image file.";
         $uploadOk = 0;
     }
 
-    // Check if file already exists
+    // check of file al bestaat
     if (file_exists($targetFile)) {
         $error = "File already exists.";
         $uploadOk = 0;
     }
 
-    // Check file size (you can adjust the size limit as needed)
+    // check of file voldoet aan de size (in KB)
     if ($_FILES['newProfilePicture']['size'] > 500000) {
         $error = "File is too large. Please choose a smaller image.";
         $uploadOk = 0;
     }
 
-    // Allow only specific file formats (you can modify the allowed formats as needed)
+    // accepteer alleen bepaalde bestandtypes
     $allowedFormats = ['jpg', 'jpeg', 'png'];
     if (!in_array($imageFileType, $allowedFormats)) {
         $error = "Only JPG, JPEG and PNG files are allowed.";
         $uploadOk = 0;
     }
 
-    // If all checks pass, move the uploaded file to the target directory
+    // als alles gecheckt is wordt de file getransporteerd naar de folder (profile_pictures)
     if ($uploadOk) {
         $user = new \PrompTopia\Framework\User();
         if (move_uploaded_file($_FILES['newProfilePicture']['tmp_name'], $targetFile)) {
@@ -99,20 +116,30 @@ if (isset($_POST['changeProfilePicture'])) {
         }
     }
 }
+
 $user = new \PrompTopia\Framework\User();
 $profilePicture = $user->getProfilePicture();
+
+// als de er geen profile picture is ingesteld === default profile picture
 if (empty($profilePicture)) {
-    $profilePicture = "default_profile_picture.jpg"; // Replace with the path to your default profile picture
+    $profilePicture = "default_profile_picture.jpg";
 }
 
 
+
+
+
+
+// Biography
 $user = new \PrompTopia\Framework\User();
 $biography = $user->getBiography();
 
+// als de post van de bio is gezet
 if (isset($_POST['saveBiography'])) {
     $user = new \PrompTopia\Framework\User();
     $newBiography = $_POST['biography'];
 
+// maak nieuwe bio aan en refresh page
     try {
         $user->setBiography($newBiography);
         header("Location: profile.php");
