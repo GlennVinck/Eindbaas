@@ -252,7 +252,7 @@ class User
 
 
 
-    public static function usernameExists($username)
+ public static function usernameExists($username)
 {
     $conn = Db::getInstance();
     $statement = $conn->prepare("SELECT COUNT(*) as count FROM users WHERE username = :username");
@@ -260,7 +260,7 @@ class User
     $statement->execute();
     $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-    //retourneert [TRUE] als er maar dan 0 zijn. Anders [FALSE] === geen users met deze username in database
+    //retourneert [TRUE] als er meer dan 0 zijn. Anders [FALSE] === geen users met deze username in database
     return $result['count'] > 0;
 }
 

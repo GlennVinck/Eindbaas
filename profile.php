@@ -167,63 +167,75 @@ if (isset($_POST['saveBiography'])) {
 <body>
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is jouw profiel</h1>
-<h1 style="margin:100px;">Hello <?php echo $_SESSION["username"];?></h1>
 
+
+<!-- Username -->
+<div class="username-profile">
+    <h1 style="margin:100px;">Hello <?php echo $_SESSION["username"];?></h1>
+<form action="profile.php" method="POST">
+    <label for="newUsername">Change Username:</label>
+    <input type="text" id="newUsername" name="newUsername" required>
+    <button type="submit" name="changeUsername">Change</button>
+</form>
+</div>
+<!-- Username -->
+
+<!-- Profile Picture -->
+<div class="profilePicture-profile"> 
+    <img id="profilePicture-display" src="<?php echo $profilePicture; ?>" alt="Profile Picture" width="200">
+<form action="" method="POST" enctype="multipart/form-data">
+    <label for="newProfilePicture">Change Profile Picture:</label>
+    <input id="profilePicture-upload" type="file" name="newProfilePicture" accept="image/*" required>
+    <button type="submit" name="changeProfilePicture">Upload</button>
+</form>
+</div>
+<!-- Profile Picture -->
+
+<!-- ⛔️ error and succes messages ⛔️ -->
 <?php if (isset($error)): ?>
     <p style="color: red; font-weight: 800;">Error: <?php echo $error; ?></p>
 <?php endif; ?>
 <?php if (isset($success)): ?>
         <p style="color: lime; font-weight: 800;"> Success: <?php echo $success; ?></p>
 <?php endif; ?>
+<!-- ⛔️ error and succes messages ⛔️ -->
 
-<form action="profile.php" method="POST">
-    <label for="newUsername">Change Username:</label>
-    <input type="text" id="newUsername" name="newUsername" required>
-    <button type="submit" name="changeUsername">Change</button>
-</form>
-
-
-
-<img src="<?php echo $profilePicture; ?>" alt="Profile Picture" width="200">
-
-<form action="" method="POST" enctype="multipart/form-data">
-    <label for="newProfilePicture">Change Profile Picture:</label>
-    <input type="file" id="newProfilePicture" name="newProfilePicture" accept="image/*" required>
-    <button type="submit" name="changeProfilePicture">Upload</button>
-</form>
-
-
-
+<!-- Biography -->
+<div class="biography-profile">
 <form action="" method="POST">
     <label for="biography">Biography:</label>
-    <textarea id="biography" name="biography"><?php echo $biography; ?></textarea>
+    <p id="bio-display"><?php echo $biography; ?></p>
+    <textarea id="bio-textarea" name="biography"><?php echo $biography; ?></textarea>
     <button type="submit" name="saveBiography">Change</button>
 </form>
+</div>
+<!-- Biography -->
 
+<!-- Password -->
+<div class="changePassword-profile">
 <form action="" method="POST">
-  <label for="oldPassword">Old Password:</label>
-  <input type="password" name="oldPassword" id="oldPassword" required>
+    <label for="oldPassword">Old Password:</label>
+    <input type="password" name="oldPassword" id="oldPassword" required>
   
-  <label for="newPassword1">New Password:</label>
-  <input type="password" name="newPassword1" id="newPassword1" required>
+    <label for="newPassword1">New Password:</label>
+    <input type="password" name="newPassword1" id="newPassword1" required>
   
-  <label for="newPassword2">Confirm New Password:</label>
-  <input type="password" name="newPassword2" id="newPassword2" required>
+    <label for="newPassword2">Confirm New Password:</label>
+    <input type="password" name="newPassword2" id="newPassword2" required>
   
-  <button type="submit" name="changePassword">Change password</button>
+    <button type="submit" name="changePassword">Change password</button>
 </form>
+</div>
+<!-- Password -->
 
 
-</body>
-
-
-
-
-
-
-
+<!-- Delete Account -->
+<div class="deleteAccount-profile">
 <form action="" method="POST">
-<button class="" name="deleteUser" type="submit" formmethod="post" value="deleteUser">Delete your account</button>
+    <button class="" name="deleteUser" type="submit" formmethod="post" value="deleteUser">Delete your account</button>
 </form>
+</div>
+<!-- Delete Account -->
+
 </body>
 </html>
