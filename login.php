@@ -37,7 +37,7 @@ if(!empty($_POST)) {
 			<div class="form-left"></div>
 			<form class="form-right" action="" method="post">
 				<h2 class="form-title">Log In</h2>
-				<h3 class="form-subtitle">Enter your credentials to log in to your account</h2>
+				<h3 class="form-subtitle">Enter your credentials to log in to your account</h3>
 
 				<?php if( isset($error) ):?>
 					<div class="form__error">

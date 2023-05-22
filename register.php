@@ -65,19 +65,21 @@ try {
 	<link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
 	<link rel="stylesheet" href="css/style.css">
 
-	<!-- ... jquery - show user if email and username is already in use! ... -->
-
+	<!-- ... Live validation of email and username availability ... -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+	// ensure that the code runs only the page (web page) has finished loading
 $(document).ready(function() {
-  // Check username availability
+  // event handlers - check username availability (value)
   $('#username').on('input', function() {
     var username = $(this).val();
+	// stuur username naar server via AJAX
     $.ajax({
       type: 'POST',
       url: 'check_username.php',
       data: { username: username },
       success: function(response) {
+		//add simpele unavailable class if 'exists' 
         if (response === 'exists') {
           $('#username-availability').text('Username already exists. Please choose a different username.').addClass('unavailable');
         } else {
@@ -87,14 +89,16 @@ $(document).ready(function() {
     });
   });
 
-  // Check email availability
+  // event handlers - check email availability (value)
   $('#email').on('input', function() {
     var email = $(this).val();
+	// stuur email naar server via AJAX
     $.ajax({
       type: 'POST',
       url: 'check_email.php',
       data: { email: email },
       success: function(response) {
+		//add simpele unavailable class if 'exists' 
         if (response === 'exists') {
           $('#email-availability').text('Email already exists. Please use a different email address.').addClass('unavailable');
         } else {

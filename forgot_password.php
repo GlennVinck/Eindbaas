@@ -115,17 +115,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"])) {
 </head>
 <body>
     <?php include_once "assets/topnav.php"; ?>
-    <h1 style="margin:100px;">Forgot Password</h1>
 
-    <?php if (!empty($success_message)): ?>
-    <p><?php echo $success_message; ?></p>
-<?php endif; ?>
+<div class="PromptopiaRegister">
+<div class="form">
+    <div class="form-left"></div>
+    <form class="form-right" action="" method="POST">
+            <h2 class="form-title">Reset your password</h2>
+		    <h3 class="form-subtitle">Enter your email to recover your old password</h3>
 
-<form method="POST" class="forgot-password-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-    <label for="email" class="forgot-password-form-label">Email address:</label>
-    <input type="email" name="email" class="forgot-password-form-input" required>
-    <button type="submit" class="forgot-password-form-button">Reset Password</button>
-</form>
+        <div class="form__field">
+    <label for="Email">Email address</label>
+    <input type="text" id="password" name="email" required>
+        </div>
+
+        <?php if (!empty($success_message)): ?>
+            <div class="sucesshaha">
+                <?php echo $success_message; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="form__field">
+    <input type="submit" value="Reset Password" class="btn btn--primary">
+        </div>
+                
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
 
 </body>
 </html>

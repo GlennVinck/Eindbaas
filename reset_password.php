@@ -25,18 +25,33 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["token"])) {
         <body>
             
         <?php include_once "assets/topnav.php"; ?>
-    <h1 style="margin:100px;">Reset Your Password</h1>
         
-        <form method="post" action="update_password.php">
+    <div class="PromptopiaRegister">
+		<div class="form">
+			<div class="form-left"></div>
+        <form class="form-right" method="post" action="update_password.php">
+        <h2 class="form-title">Reset your password</h2>
+		<h3 class="form-subtitle">Enter your new password</h3>
+
             <input type="hidden" name="token" value="<?php echo $token; ?>">
+
+            <div class="form__field">
             <label for="password">New Password:</label>
             <input type="password" name="password" id="password" required>
-            <br><br>
+            </div>
+            
+            <div class="form__field">
             <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
-            <br><br>
-            <input type="submit" value="Reset Password">
+            <input type="password" name="confirm_password" id="password" required>
+            </div>
+
+            <div class="form__field">
+            <input type="submit" value="Reset Password" class="btn btn--primary">
+            </div>
+
         </form>
+        </div>
+	</div>
         <?php
     } else {
         // Token is invalid or expired, show an error message
