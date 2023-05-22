@@ -244,3 +244,72 @@ body{
   .sucesshaha {
     color: green;
   }
+
+
+  /* Profile Picture */
+
+  .profilePicture-profile {
+    margin: 50px;
+    padding-bottom: 1em;
+    text-align: center;
+  }
+
+  #profilePicture-display {
+    width: 150px;
+    border-radius: 8em;
+    border: 2px solid #10efd4;
+    box-shadow: 0 2px 4px #10efd4;
+  }
+
+  #profilePicture-upload {
+    text-align: center;
+    margin-top: 10px;
+    display: contents flex;
+  }
+
+  /* Username */
+  .username-profile {
+    margin: 50px;
+    text-align: center;
+  }
+
+  /* Biography */
+  .biography-profile {
+    margin: 50px;
+    text-align: center;
+  }
+
+  .biography-profile label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: #7ac4bb;
+    
+  }
+
+  #bio-display {
+    margin-bottom: 10px;
+    font-family: Finlandica,sans-serif;
+  }
+
+  #bio-textarea {
+    padding: 0.5em;
+    width: 200px;
+    height: 100px;
+    margin-bottom: 10px;
+    font-family: Finlandica,sans-serif;
+  }
+
+
+  /* Change Password */
+  .changePassword-profile {
+    margin: 50px;
+    text-align: center;
+  }
+
+  /* Delete Account */
+  .deleteAccount-profile {
+    margin: 50px;
+    text-align: center;
+  }

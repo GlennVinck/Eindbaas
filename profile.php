@@ -111,6 +111,7 @@ if (isset($_POST['changeProfilePicture'])) {
         $user = new \PrompTopia\Framework\User();
         if (move_uploaded_file($_FILES['newProfilePicture']['tmp_name'], $targetFile)) {
             $user->setProfilePicture($targetFile);
+            $success = "Profile picture succesfully changed.";
         } else {
             $error = "Failed to upload the image.";
         }
@@ -166,9 +167,6 @@ if (isset($_POST['saveBiography'])) {
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
-<h1 style="margin:100px;">Dit is jouw profiel</h1>
-
-
 <!-- Username -->
 <div class="username-profile">
     <h1 style="margin:100px;">Hello <?php echo $_SESSION["username"];?></h1>
@@ -180,10 +178,12 @@ if (isset($_POST['saveBiography'])) {
 </div>
 <!-- Username -->
 
+
+
 <!-- Profile Picture -->
-<div class="profilePicture-profile"> 
+<div class="form"> 
     <img id="profilePicture-display" src="<?php echo $profilePicture; ?>" alt="Profile Picture" width="200">
-<form action="" method="POST" enctype="multipart/form-data">
+<form class="profilePicture-profile" action="" method="POST" enctype="multipart/form-data">
     <label for="newProfilePicture">Change Profile Picture:</label>
     <input id="profilePicture-upload" type="file" name="newProfilePicture" accept="image/*" required>
     <button type="submit" name="changeProfilePicture">Upload</button>
@@ -191,29 +191,35 @@ if (isset($_POST['saveBiography'])) {
 </div>
 <!-- Profile Picture -->
 
+
 <!-- ⛔️ error and succes messages ⛔️ -->
 <?php if (isset($error)): ?>
     <p style="color: red; font-weight: 800;">Error: <?php echo $error; ?></p>
 <?php endif; ?>
 <?php if (isset($success)): ?>
-        <p style="color: lime; font-weight: 800;"> Success: <?php echo $success; ?></p>
+    <p style="color: lime; font-weight: 800;">Boom! <?php echo $success; ?></p>
 <?php endif; ?>
 <!-- ⛔️ error and succes messages ⛔️ -->
 
 <!-- Biography -->
+<h1 style="margin: 60px">Change your bio</h1>
+<div class="form"> 
 <div class="biography-profile">
-<form action="" method="POST">
+<form class="form-right" action="" method="POST">
     <label for="biography">Biography:</label>
     <p id="bio-display"><?php echo $biography; ?></p>
     <textarea id="bio-textarea" name="biography"><?php echo $biography; ?></textarea>
     <button type="submit" name="saveBiography">Change</button>
 </form>
 </div>
+</div>
 <!-- Biography -->
 
 <!-- Password -->
+<h1 style="margin: 60px">Change your password</h1>
+<div class="form"> 
 <div class="changePassword-profile">
-<form action="" method="POST">
+<form class="form-right" action="" method="POST">
     <label for="oldPassword">Old Password:</label>
     <input type="password" name="oldPassword" id="oldPassword" required>
   
@@ -226,12 +232,13 @@ if (isset($_POST['saveBiography'])) {
     <button type="submit" name="changePassword">Change password</button>
 </form>
 </div>
+</div>
 <!-- Password -->
 
 
 <!-- Delete Account -->
 <div class="deleteAccount-profile">
-<form action="" method="POST">
+<form class="form-right" action="" method="POST">
     <button class="" name="deleteUser" type="submit" formmethod="post" value="deleteUser">Delete your account</button>
 </form>
 </div>
