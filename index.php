@@ -147,6 +147,7 @@ if (isset($_SESSION['id'])) {
                 <p><?php echo $prompt["price"]; ?></p>
                 <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
                 <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+                <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
             </div>
         <?php endforeach; ?>
     </div>
@@ -169,7 +170,34 @@ if (isset($_SESSION['id'])) {
             <a href="?page=<?php echo $page + 1; ?>">Next</a>
         <?php endif; ?>
     </div>
+    <script>
+        const favouriteBtns = document.getElementsByClassName('favourite-btn');
+        Array.from(favouriteBtns).forEach((btn) => {
+            btn.addEventListener('click', () => {
 
+                let promptId = btn.dataset.promptid;
+                let userId = <?php echo $_SESSION['id']; ?>;
 
+                let formData = new FormData();
+                formData.append("promptId", promptId);
+                formData.append("userId", userId);
+
+                async function upload(formData) {
+                    try {
+                        const response = await fetch("ajax/favouriteprompt.php", {
+                        method: "POST",
+                        body: formData,
+                        });
+                        const result = await response.json();
+                        console.log("Success:", result);
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                    }
+
+                upload(formData);
+            });
+        });
+    </script>
 </body>
 </html>
