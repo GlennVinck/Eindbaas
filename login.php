@@ -47,11 +47,11 @@ if(!empty($_POST)) {
 
 				<div class="form__field">
 					<label for="Email">Email</label>
-					<input type="text" id="email" name="email">
+					<input type="text" id="email" name="email" required>
 				</div>
 				<div class="form__field">
 					<label for="Password">Password</label>
-					<input type="password" id="password" name="password">
+					<input type="password" id="password" name="password" required>
 				</div>
 
 				<div class="form__field">

@@ -135,19 +135,19 @@ $(document).ready(function() {
 
 				<div class="form__field">
 					<label for="Username">Username</label>
-					<input type="text" id="username" name="username">	
+					<input type="text" id="username" name="username" required>	
 					<div id="username-availability" class="availability"></div>
 				</div>
 
 				<div class="form__field">
 					<label for="Email">Email</label>
 					<input type="text" id="email" name="email">
-					<div id="email-availability" class="availability"></div>
+					<div id="email-availability" class="availability" required></div>
 				</div>
 
 				<div class="form__field">
 					<label for="Password">Password</label>
-					<input type="password" id="password" name="password">
+					<input type="password" id="password" name="password" required>
 				</div>
 
 				<div class="form__field">
