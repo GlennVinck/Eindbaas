@@ -28,6 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["token"]) && isset($_PO
     $stmt->execute([$hashed_password, $token]);
 
     echo "Your password has been updated successfully!";
+    // 5 second timer
+    sleep(5);
+    header("Location: login.php");
+    exit;
 } else {
     echo "Invalid request. Please try again.";
 }?> <!DOCTYPE html>
