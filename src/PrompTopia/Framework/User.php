@@ -206,7 +206,7 @@ class User
                     session_start();
 
                     $_SESSION['loggedin'] = true;
-                    $_SESSION['username'] = $email;
+                    $_SESSION['username'] = $user["username"];
                     $_SESSION["id"] = $user["id"];
 
                     header("Location: index.php");

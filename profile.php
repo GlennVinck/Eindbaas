@@ -169,7 +169,7 @@ if (isset($_POST['saveBiography'])) {
 <?php include_once "assets/topnav.php"; ?>
 <!-- Username -->
 <div class="username-profile">
-    <h1 style="margin:100px;">Hello <?php echo $_SESSION["username"];?></h1>
+    <h1 style="margin:100px;">Hello <?php echo $_SESSION['username'];?></h1>
 <form action="profile.php" method="POST">
     <label for="newUsername">Change Username:</label>
     <input type="text" id="newUsername" name="newUsername" required>
