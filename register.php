@@ -25,29 +25,30 @@ if (\PrompTopia\Framework\User::emailExists($email)) {
 		$user->setUsername($_POST["username"]);
 		$user->setEmail($_POST["email"]);
 		$user->setPassword($_POST["password"]);
-	
+
 		$user->save();
+		$validate = 'https://promptopia.azurewebsites.net/validate.php';
 
 		$email = new \SendGrid\Mail\Mail(); 
-$email->setFrom("promptopia6@gmail.com", "PrompTopia");
-$email->setSubject("Welcome to PrompTopia");
-$email->addTo($_POST["email"]);
-$email->addContent(
-    "text/html",
-    "Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Best,<br>PrompTopia");
-$sendgrid = new \SendGrid($api_key);
-try {
-    $response = $sendgrid->send($email);
-    $responseData = $response;
-} catch (Exception $e) {
-    echo 'Caught exception: '. $e->getMessage() ."\n";
-}
+		$email->setFrom("promptopia6@gmail.com", "PrompTopia");
+		$email->setSubject("Welcome to PrompTopia");
+		$email->addTo($_POST["email"]);
+		$email->addContent(
+			"text/html",
+			"Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Please validate your account by clicking the following link:<a href='$validate'>Validate here</a><br><br>Best,<br>PrompTopia");
+		$sendgrid = new \SendGrid($api_key);
+		try {
+			$response = $sendgrid->send($email);
+			$responseData = $response;
+		} catch (Exception $e) {
+			echo 'Caught exception: '. $e->getMessage() ."\n";
+		}
 
-		header('Location: login.php');
-	} catch (\Throwable $th) {
-		$error = $th->getMessage();
-	}
-}
+				header('Location: login.php');
+			} catch (\Throwable $th) {
+				$error = $th->getMessage();
+			}
+		}
 
 
 
