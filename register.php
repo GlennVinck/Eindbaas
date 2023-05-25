@@ -1,5 +1,7 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
+$config = parse_ini_file( "config/config.ini");
+$api_key = $config['sendgrid_api_key'];
 
 if (!empty($_POST)) {
 	try {
@@ -33,12 +35,10 @@ $email->addTo($_POST["email"]);
 $email->addContent(
     "text/html",
     "Hi there,<br><br>Thank you for registering on Promptopia! We're excited to have you on board.<br><br>Best,<br>PrompTopia");
-$sendgrid = new \SendGrid('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');
+$sendgrid = new \SendGrid($api_key);
 try {
     $response = $sendgrid->send($email);
-    print $response->statusCode() . "\n";
-    print_r($response->headers());
-    print $response->body() . "\n";
+    $responseData = $response;
 } catch (Exception $e) {
     echo 'Caught exception: '. $e->getMessage() ."\n";
 }
@@ -128,7 +128,7 @@ $(document).ready(function() {
 
 
 				<?php if( isset($error) ):?>
-					<div class="form__error"">
+					<div class="form__error">
 						<?php echo $error; ?>
 					</div>
 				<?php endif; ?>

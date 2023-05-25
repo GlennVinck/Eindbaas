@@ -12,14 +12,6 @@ class User
 
     private $biography;
 
-
-
-
-
-
-
-
-
     public function getUsername()
     {
         return $this->username;
