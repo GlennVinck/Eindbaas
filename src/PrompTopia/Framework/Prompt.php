@@ -191,4 +191,13 @@ public function getPrice()
         return $result;
     }
 
+    public static function searchPrompts($searchQuery)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT * FROM prompts WHERE title LIKE :searchQuery OR prompt LIKE :searchQuery OR tags LIKE :searchQuery OR type LIKE :searchQuery");
+    $statement->bindValue(":searchQuery", '%' . $searchQuery . '%');
+    $statement->execute();
+    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+}
+
 }

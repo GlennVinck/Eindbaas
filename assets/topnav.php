@@ -6,12 +6,15 @@
                 <span class="website-name">PrompTopia</span>
             </li>
         </ul>
-		<div class="search-bar">
-			<input class="search-input" type="text" placeholder="Search Prompts">
-			<button class="search-btn" type="submit">
-                <img class="search-icon" src="images/search.svg" alt="search">
-            </button>
-        </div>
+		<!-- Search Bar -->
+        <form action="marketplace.php" method="GET">
+    <div class="search-bar">
+        <input class="search-input" type="text" name="search" placeholder="Search Prompts" value="<?php echo isset($searchQuery) ? $searchQuery : ''; ?>">
+        <button class="search-btn" type="submit">
+            <img class="search-icon" src="images/search.svg" alt="search">
+        </button>
+    </div>
+        </form>
         <ul class="topnav-menu">
             <?php if(isset($_SESSION['id']) && \PrompTopia\Framework\User::isAdmin()){
                     echo '<li class="topnav-menu-item"><a href="admin.php">Admin</a></li>';
