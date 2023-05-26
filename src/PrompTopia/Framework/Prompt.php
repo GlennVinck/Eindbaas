@@ -200,4 +200,13 @@ public function getPrice()
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
 }
 
+public static function getFiltered($filter){
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT * FROM prompts WHERE price LIKE :filter");
+    $statement->bindValue(":filter", '%' . $filter . '%');
+    $statement->execute();
+    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+}
+
+
 }
