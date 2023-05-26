@@ -195,7 +195,7 @@ class User
     public function connectCreditSystem()
 {
     $conn = Db::getInstance();
-    $initialCredit = 0.50;
+    $initialCredit = 8;
 
     // Insert a new row into the credits table with the user ID and initial credit balance
     $statement = $conn->prepare("INSERT INTO credits (user_id, balance) VALUES (:id, :balance)");
@@ -290,9 +290,15 @@ class User
     public static function deleteUser()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("DELETE FROM users WHERE id = :id");
-        $statement->bindValue(":id", $_SESSION['id']);
-        $statement->execute();
+        $userId = $_SESSION['id'];
+
+    $statement = $conn->prepare("DELETE FROM credits WHERE user_id = :userId");
+    $statement->bindValue(":userId", $userId);
+    $statement->execute();
+
+    $statement = $conn->prepare("DELETE FROM users WHERE id = :id");
+    $statement->bindValue(":id", $userId);
+    $statement->execute();
     }
 
 
