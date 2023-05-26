@@ -41,6 +41,10 @@ if (isset($_POST['changeUsername'])) {
     }
 }
 
+// credits
+$user = new \PrompTopia\Framework\User();
+$credits = $user->getCredits();
+
 
 
 
@@ -149,6 +153,8 @@ if (isset($_POST['saveBiography'])) {
     catch (\Exception $e) {
         $error = $e->getMessage();
 }
+
+
 }
 
 
@@ -167,6 +173,13 @@ if (isset($_POST['saveBiography'])) {
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
+
+<!-- Credits -->
+<div class="credits">
+    <p style="font-size: 20px;" class="credits-display">Credits: <?php echo $credits['balance']; ?></p>
+</div>
+<!-- Credits -->
+
 <!-- Username -->
 <div class="username-profile">
     <h1 style="margin:100px;">Hello <?php echo $_SESSION['username'];?></h1>

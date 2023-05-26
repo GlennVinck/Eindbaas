@@ -12,6 +12,40 @@ class User
 
     private $biography;
 
+    private $id;
+
+    private $credits;
+
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getCredits()
+    {
+        $conn = Db::getInstance();
+        $stmt = $conn->prepare("SELECT balance FROM credits WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $_SESSION['id']);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function setCredits($credits)
+    {
+        $this->credits = $credits;
+
+        return $this;
+    }
+
     public function getUsername()
     {
         return $this->username;
@@ -125,12 +159,9 @@ class User
 }
 
     public function save() {
-        // Get the database connection-
         $conn = Db::getInstance();
 
-
-
-        // Check if username or email already exists
+        // check if username or email already exists
     $statement = $conn->prepare("SELECT id FROM users WHERE username = :username OR email = :email");
     $statement->bindValue(":username", $this->getUsername());
     $statement->bindValue(":email", $this->getEmail());
@@ -140,11 +171,8 @@ class User
     if ($existingUser) {
         throw new \Exception("Username or email already exists. Please choose a different one.");
     }
-
-        // Prepare the query
         $statement = $conn->prepare("insert into users (username, email, password) values (:username, :email, :password)");
 
-        // Bind the parameters
         $username = $this->getUsername();
         $email = $this->getEmail();
         $password = $this->getPassword();
@@ -153,11 +181,36 @@ class User
         $statement->bindValue(":email", $email);
         $statement->bindValue(":password", $password);
 
-        // Execute the query
         $result = $statement->execute();
 
-        return $result;
+        // zet de id to the last inserted ID
+        if ($result) {
+            $this->id = $conn->lastInsertId(); 
+            return true;
+        } else {
+            return false;
+        }
     }
+    
+    public function connectCreditSystem()
+{
+    $conn = Db::getInstance();
+    $initialCredit = 0.50;
+
+    // Insert a new row into the credits table with the user ID and initial credit balance
+    $statement = $conn->prepare("INSERT INTO credits (user_id, balance) VALUES (:id, :balance)");
+    $statement->bindParam(":id", $this->getId());
+    $statement->bindParam(":balance", $initialCredit);
+
+    if ($statement->execute()) {
+        // Credit system connected to the user successfully
+        return true;
+    } else {
+        // An error occurred while connecting the credit system
+        return false;
+    }
+    
+}
 
     public function changeUsername($newUsername)
     {
@@ -331,10 +384,6 @@ public function checkResetToken($token) {
         // Return the fetched user or null if not found
         return $user;
     }
+
     
-
-
-
-
-
 }

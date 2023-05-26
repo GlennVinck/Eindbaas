@@ -8,22 +8,24 @@
     "packages": [
         {
             "name": "cloudinary/cloudinary_php",
-            "version": "2.10.2",
+            "version": "2.11.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:cloudinary/cloudinary_php.git",
-                "reference": "27876ddbbb7a4e57b26503bf4c186defb26b60b1"
+                "reference": "d7bf9ddb93be59053e4eb2cf6164ea5f8af77413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudinary/cloudinary_php/zipball/27876ddbbb7a4e57b26503bf4c186defb26b60b1",
-                "reference": "27876ddbbb7a4e57b26503bf4c186defb26b60b1",
+                "url": "https://api.github.com/repos/cloudinary/cloudinary_php/zipball/d7bf9ddb93be59053e4eb2cf6164ea5f8af77413",
+                "reference": "d7bf9ddb93be59053e4eb2cf6164ea5f8af77413",
                 "shasum": ""
             },
             "require": {
                 "cloudinary/transformation-builder-sdk": "^1",
                 "ext-json": "*",
-                "guzzlehttp/guzzle": "^6|^7",
+                "guzzlehttp/guzzle": "^6.5.8|^7.4.5",
+                "guzzlehttp/promises": "^1.5.3|^2.0",
+                "guzzlehttp/psr7": "^1.9.1|^2.5",
                 "monolog/monolog": "^1|^2|^3",
                 "php": ">=5.6.0",
                 "psr/log": "^1|^2|^3",
@@ -68,7 +70,7 @@
                 "email": "info@cloudinary.com",
                 "issues": "https://github.com/cloudinary/cloudinary_php/issues"
             },
-            "time": "2023-02-01T18:46:53+00:00"
+            "time": "2023-05-23T13:36:46+00:00"
         },
         {
             "name": "cloudinary/transformation-builder-sdk",
