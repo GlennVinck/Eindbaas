@@ -54,9 +54,14 @@ $biography = $user->getBiography();
 
 <!-- Credits -->
 <div class="credits">
-    <p style="font-size: 20px;" class="credits-display">Credits: <?php echo $credits['balance']; ?></p>
+    <?php if (is_array($credits)) : ?>
+        <p style="font-size: 20px;" class="credits-display">Credits: <?php echo $credits['balance']; ?></p>
+    <?php else : ?>
+        <p style="font-size: 20px;" class="credits-display">Credits: N/A</p>
+    <?php endif; ?>
 </div>
 <!-- Credits -->
+
 
 
 
@@ -94,6 +99,7 @@ $biography = $user->getBiography();
     <img id="profilePicture-display" src="<?php echo $profilePicture; ?>" alt="Profile Picture" width="200">
 </div>
 <!-- Profile Picture -->
+
 
 <!-- Biography -->
 <h1 style="margin: 60px; text-align: center;">Your bio</h1>
