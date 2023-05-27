@@ -52,6 +52,12 @@ $biography = $user->getBiography();
 </div>
 <!-- Username -->
 
+<!-- Credits -->
+<div class="credits">
+    <p style="font-size: 20px;" class="credits-display">Credits: <?php echo $credits['balance']; ?></p>
+</div>
+<!-- Credits -->
+
 
 
 
@@ -82,8 +88,6 @@ $biography = $user->getBiography();
         }
     }
 </script>
-
-
 
 <!-- Profile Picture -->
 <div class="form"> 
