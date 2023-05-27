@@ -258,7 +258,7 @@ class User
                     
                     exit();
                 } else {
-                    return false;
+                    throw new \Exception("Email or password is incorrect.");    
 
                 }
             } else {
