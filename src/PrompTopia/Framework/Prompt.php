@@ -12,9 +12,13 @@ class Prompt
     private $type;
     private $tags;
     private $categories;
+    private $user_id;
 
     
-
+    public function getUser_id()
+    {
+        return $this->user_id;
+    }
 
     public function getId()
     {
@@ -32,7 +36,7 @@ class Prompt
     public static function getAll($offset = 0)
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("select * from prompts ORDER BY id DESC LIMIT 10 OFFSET :offset");
+        $statement = $conn->prepare("select prompts.*, users.username from prompts JOIN users ON prompts.user_id = users.id ORDER BY id DESC LIMIT 10 OFFSET :offset");
         $statement->bindValue(":offset", (int) $offset, \PDO::PARAM_INT); 
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
@@ -151,16 +155,28 @@ public function getPrice()
         return $this;
     }
 
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+        return $this;
+    }
+
 
     public function save(){
         $conn = Db::getInstance();
-        $statement = $conn->prepare("insert into prompts (title, prompt, img, price, type, tags) values (:title, :prompt, :img, :price, :type, :tags)");
+        $statement = $conn->prepare("insert into prompts (user_id, title, prompt, img, price, type, tags) values (:userId, :title, :prompt, :img, :price, :type, :tags)");
         $statement->bindValue(":title", $this->getTitle());
         $statement->bindValue(":prompt", $this->getPrompt());
         $statement->bindValue(":img", $this->getImg());
         $statement->bindValue(":price", $this->getPrice());
         $statement->bindValue(":type", $this->getType());
         $statement->bindValue(":tags", $this->getTags());
+        $statement->bindValue(":userId", $this->getUserId());
         $result = $statement->execute();
         return $result;
     }
@@ -191,19 +207,37 @@ public function getPrice()
         return $result;
     }
 
-    public static function searchPrompts($searchQuery)
+        public static function searchPrompts($searchQuery)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE title LIKE :searchQuery OR prompt LIKE :searchQuery OR tags LIKE :searchQuery OR type LIKE :searchQuery");
+        $statement->bindValue(":searchQuery", '%' . $searchQuery . '%');
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getFiltered($filter){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE price LIKE :filter");
+        $statement->bindValue(":filter", '%' . $filter . '%');
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getPromptByUserId($user_id)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = :user_id and id = :id");
+        $statement->bindValue(":userId", $user_id);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
+    public static function getAllFromUser($username)
 {
     $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT * FROM prompts WHERE title LIKE :searchQuery OR prompt LIKE :searchQuery OR tags LIKE :searchQuery OR type LIKE :searchQuery");
-    $statement->bindValue(":searchQuery", '%' . $searchQuery . '%');
-    $statement->execute();
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
-}
-
-public static function getFiltered($filter){
-    $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT * FROM prompts WHERE price LIKE :filter");
-    $statement->bindValue(":filter", '%' . $filter . '%');
+    $statement = $conn->prepare("SELECT p.*, u.username FROM prompts AS p INNER JOIN users AS u ON p.user_id = u.id WHERE u.username = :username");
+    $statement->bindValue(":username", $username);
     $statement->execute();
     return $statement->fetchAll(\PDO::FETCH_ASSOC);
 }

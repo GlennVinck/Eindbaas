@@ -37,6 +37,7 @@ if(!empty($_POST)){
             $prompt->setPrice($_POST["price"]);
             $prompt->setType($_POST["type"]);
             $prompt->setTags($_POST["tags"]);
+            $prompt->setUserId($_SESSION['id']);
             $prompt->save();
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             $offset = ($page - 1) * 10;
@@ -176,20 +177,22 @@ if (isset($_GET['filter'])) {
     }
     ?> 
    
-    <div class="prompts">
-        <?php foreach($prompts as $prompt): ?>
-            <div class="prompt">
-                <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2>
-                <h3><?php echo htmlspecialchars( $prompt["prompt"]); ?></h3>
-                <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
-                <p><?php echo $prompt["price"]; ?></p>
-                <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-                <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
-                <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
-                <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
-            </div>
-        <?php endforeach; ?>
+   <?php foreach ($prompts as $prompt): ?>
+    <div class="prompt">
+
+        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["username"]);?></a></h4> 
+
+        <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
+        <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
+        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
+        <p><?php echo $prompt["price"]; ?></p>
+        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
+        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+        <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
+        <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
     </div>
+<?php endforeach; ?>
+
 
     <!-- Teller om van pagina te veranderen voor volgende prompts te zien -->
     <div class="pagination">
