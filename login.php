@@ -6,12 +6,7 @@ if(!empty($_POST)) {
     try {
         $email = $_POST["email"];
         $password = $_POST["password"];
-        $user = \PrompTopia\Framework\User::login($email, $password);
-            if($user) {
-                exit();
-            } else {
-                $error = "Username or password is incorrect";
-            }
+        \PrompTopia\Framework\User::login($email, $password);
 	} catch (\Throwable $th) {
 		$error = $th->getMessage();
 	}

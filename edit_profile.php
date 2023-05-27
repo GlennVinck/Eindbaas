@@ -1,16 +1,13 @@
 <?php 
-require_once __DIR__ . "/bootstrap.php";
-
+include_once (__DIR__ . "/bootstrap.php");
 
 if(!isset($_SESSION['username'])) {
     header("Location: index.php");
     exit;
 }
 
-// credits
-$user = new \PrompTopia\Framework\User();
-$credits = $user->getCredits();
-//Profile Picture
+
+
 // Delete account
 if (isset($_POST['deleteUser'])) {
     $user = new \PrompTopia\Framework\User();
@@ -19,6 +16,9 @@ if (isset($_POST['deleteUser'])) {
     header("Location: login.php");
     exit();
 }
+
+
+
 
 // Change Username
 if (isset($_POST['changeUsername'])) {
@@ -37,8 +37,16 @@ if (isset($_POST['changeUsername'])) {
         } catch (\Exception $e) {
             $error = $e->getMessage();
         }
+
     }
 }
+
+// credits
+$user = new \PrompTopia\Framework\User();
+$credits = $user->getCredits();
+
+
+
 
 // Change password
 if (isset($_POST['changePassword'])) {
@@ -57,40 +65,57 @@ if (isset($_POST['changePassword'])) {
     }
 }
 
+
+
+
 // Profile picture
 if (isset($_POST['changeProfilePicture'])) {
+
+    // haal type bestand op 
+    //strtolower -> string to lowercase
+    // pathinfo() zorgt voor deze info (bestandsnaam & type )
     $imageFileType = strtolower(pathinfo($_FILES['newProfilePicture']['name'], PATHINFO_EXTENSION));
+    // waar de files worden opgeslagen
     $targetDir = "profile_pictures/";
+    // creeër unieke code om duplicates tegen te gaan
     $targetFile = $targetDir . uniqid() . '.' . $imageFileType;
+
+
+    // toegestaan? 1 = ja / 0 = nee (boolean)
     $uploadOk = 1;
 
+    // check of image een geldige afbeelding is getimagesize()
     $check = getimagesize($_FILES['newProfilePicture']['tmp_name']);
     if ($check === false) {
         $error = "Invalid image file.";
         $uploadOk = 0;
     }
 
+    // check of file al bestaat
     if (file_exists($targetFile)) {
         $error = "File already exists.";
         $uploadOk = 0;
     }
 
+    // check of file voldoet aan de size (in KB)
     if ($_FILES['newProfilePicture']['size'] > 500000) {
         $error = "File is too large. Please choose a smaller image.";
         $uploadOk = 0;
     }
 
+    // accepteer alleen bepaalde bestandtypes
     $allowedFormats = ['jpg', 'jpeg', 'png'];
     if (!in_array($imageFileType, $allowedFormats)) {
         $error = "Only JPG, JPEG and PNG files are allowed.";
         $uploadOk = 0;
     }
 
+    // als alles gecheckt is wordt de file getransporteerd naar de folder (profile_pictures)
     if ($uploadOk) {
         $user = new \PrompTopia\Framework\User();
         if (move_uploaded_file($_FILES['newProfilePicture']['tmp_name'], $targetFile)) {
             $user->setProfilePicture($targetFile);
-            $success = "Profile picture successfully changed.";
+            $success = "Profile picture succesfully changed.";
         } else {
             $error = "Failed to upload the image.";
         }
@@ -128,6 +153,8 @@ if (isset($_POST['saveBiography'])) {
     catch (\Exception $e) {
         $error = $e->getMessage();
 }
+
+
 }
 
 
@@ -139,13 +166,20 @@ if (isset($_POST['saveBiography'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PrompTopia</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="css/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Finlandica:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
+
+<!-- Credits -->
+<div class="credits">
+    <p style="font-size: 20px;" class="credits-display">Credits: <?php echo $credits['balance']; ?></p>
+</div>
+<!-- Credits -->
+
 <!-- Username -->
 <div class="username-profile">
     <h1 style="margin:100px;">Hello <?php echo $_SESSION['username'];?></h1>

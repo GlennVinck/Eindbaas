@@ -16,6 +16,8 @@ class User
     private $biography;
 
 
+    private $credits;
+
 
     public function getId()
     {
@@ -25,8 +27,30 @@ class User
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
+
+    public function getCredits()
+    {
+        $conn = Db::getInstance();
+        $stmt = $conn->prepare("SELECT balance FROM credits WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $_SESSION['id']);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function setCredits($credits)
+    {
+        $this->credits = $credits;
+
+        return $this;
+    }
+
+
+
+    
 
     public function getUsername()
     {
@@ -141,12 +165,9 @@ class User
 }
 
     public function save() {
-        // Get the database connection-
         $conn = Db::getInstance();
 
-
-
-        // Check if username or email already exists
+        // check if username or email already exists
     $statement = $conn->prepare("SELECT id FROM users WHERE username = :username OR email = :email");
     $statement->bindValue(":username", $this->getUsername());
     $statement->bindValue(":email", $this->getEmail());
@@ -156,11 +177,8 @@ class User
     if ($existingUser) {
         throw new \Exception("Username or email already exists. Please choose a different one.");
     }
-
-        // Prepare the query
         $statement = $conn->prepare("insert into users (username, email, password) values (:username, :email, :password)");
 
-        // Bind the parameters
         $username = $this->getUsername();
         $email = $this->getEmail();
         $password = $this->getPassword();
@@ -169,11 +187,36 @@ class User
         $statement->bindValue(":email", $email);
         $statement->bindValue(":password", $password);
 
-        // Execute the query
         $result = $statement->execute();
 
-        return $result;
+        // zet de id to the last inserted ID
+        if ($result) {
+            $this->id = $conn->lastInsertId(); 
+            return true;
+        } else {
+            return false;
+        }
     }
+    
+    public function connectCreditSystem()
+{
+    $conn = Db::getInstance();
+    $initialCredit = 8;
+
+    // Insert a new row into the credits table with the user ID and initial credit balance
+    $statement = $conn->prepare("INSERT INTO credits (user_id, balance) VALUES (:id, :balance)");
+    $statement->bindParam(":id", $this->getId());
+    $statement->bindParam(":balance", $initialCredit);
+
+    if ($statement->execute()) {
+        // Credit system connected to the user successfully
+        return true;
+    } else {
+        // An error occurred while connecting the credit system
+        return false;
+    }
+    
+}
 
     public function changeUsername($newUsername)
     {
@@ -221,7 +264,7 @@ class User
                     
                     exit();
                 } else {
-                    return false;
+                    throw new \Exception("Email or password is incorrect.");    
 
                 }
             } else {
@@ -253,9 +296,15 @@ class User
     public static function deleteUser()
     {
         $conn = Db::getInstance();
-        $statement = $conn->prepare("DELETE FROM users WHERE id = :id");
-        $statement->bindValue(":id", $_SESSION['id']);
-        $statement->execute();
+        $userId = $_SESSION['id'];
+
+    $statement = $conn->prepare("DELETE FROM credits WHERE user_id = :userId");
+    $statement->bindValue(":userId", $userId);
+    $statement->execute();
+
+    $statement = $conn->prepare("DELETE FROM users WHERE id = :id");
+    $statement->bindValue(":id", $userId);
+    $statement->execute();
     }
 
 
@@ -336,35 +385,21 @@ class User
     }
 
 
-    public function checkResetToken($token) {
-            $conn = Db::getInstance(); // Get the database connection
-        
-            // Code to check if the token exists and is not expired
-            $stmt = $conn->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_token_expiration > ?");
-            $stmt->execute([$token, date("Y-m-d H:i:s")]);
-            $user = $stmt->fetch();
-        
-            // Return the fetched user or null if not found
-            return $user;
-        }
+public function checkResetToken($token) {
+        $conn = Db::getInstance(); // Get the database connection
     
-    public static function getByUsername($username)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
-        $statement->bindValue(":username", $username);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $result;
+        // Code to check if the token exists and is not expired
+        $stmt = $conn->prepare("SELECT id FROM users WHERE reset_token = ? AND reset_token_expiration > ?");
+        $stmt->execute([$token, date("Y-m-d H:i:s")]);
+        $user = $stmt->fetch();
+    
+        // Return the fetched user or null if not found
+        return $user;
     }
+    
 
-    public static function getById($id)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $result;
-    }
+
+
+
+
 }

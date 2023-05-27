@@ -1,6 +1,5 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
-$config = parse_ini_file( "config/config.ini");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -8,20 +7,6 @@ ini_set('display_errors', 1);
 if($_SESSION['loggedin'] !== true){
     header('Location: notloggedin.php');
 }
-
-use Cloudinary\Cloudinary;
-use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
-
-//aanmaken van cloudinary
-$cloudinary = new Cloudinary(
-    [
-        'cloud' => [
-            'cloud_name'=> $config['cloud_name'],
-            'api_key'=> $config['api_key'],
-            'api_secret'=> $config['api_secret'],
-        ],
-    ]
-);
 
 $categories = \PrompTopia\Framework\Prompt::categories();
 
@@ -177,22 +162,11 @@ if (isset($_GET['filter'])) {
     }
     ?> 
    
-   <?php foreach ($prompts as $prompt): ?>
-    <div class="prompt">
-
-        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["username"]);?></a></h4> 
-
-        <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
-        <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
-        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
-        <p><?php echo $prompt["price"]; ?></p>
-        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
-        <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
-        <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
+    <div class="prompts">
+        <?php foreach($prompts as $prompt): ?>
+            <?php include "assets/promptcard.php"; ?>
+        <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
-
 
     <!-- Teller om van pagina te veranderen voor volgende prompts te zien -->
     <div class="pagination">
@@ -212,62 +186,74 @@ if (isset($_GET['filter'])) {
             <a href="?page=<?php echo $page + 1; ?>">Next</a>
         <?php endif; ?>
     </div>
-    <script>
-        const favouriteBtns = document.getElementsByClassName('favourite-btn');
-        Array.from(favouriteBtns).forEach((btn) => {
-            btn.addEventListener('click', () => {
+    
 
-                let promptId = btn.dataset.promptid;
-                let userId = <?php echo $_SESSION['id']; ?>;
+<script>
+const favouriteBtns = document.getElementsByClassName('favourite-btn');
+Array.from(favouriteBtns).forEach((btn) => {
+    btn.addEventListener('click', () => {
 
-                let formData = new FormData();
-                formData.append("promptId", promptId);
-                formData.append("userId", userId);
+        let promptId = btn.dataset.promptid;
+        let userId = <?php echo $_SESSION['id']; ?>;
 
-                async function upload(formData) {
-                    try {
-                        const response = await fetch("ajax/favouriteprompt.php", {
-                        method: "POST",
-                        body: formData,
-                        });
-                        const result = await response.json();
-                        console.log("Success:", result);
-                    } catch (error) {
-                        console.error("Error:", error);
-                    }
-                    }
+        let formData = new FormData();
+        formData.append("promptId", promptId);
+        formData.append("userId", userId);
 
-                upload(formData);
-            });
-        });
+        async function upload(formData) {
+            try {
+                const response = await fetch("ajax/favouriteprompt.php", {
+                method: "POST",
+                body: formData,
+                });
+                const result = await response.json();
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            }
 
-        const likeBtns = document.getElementsByClassName('like-btn');
-        Array.from(likeBtns).forEach((btn) => {
-            btn.addEventListener('click', () => {
+        upload(formData);
+    });
+});
 
-                let promptId = btn.dataset.promptid;
-                let userId = <?php echo $_SESSION['id']; ?>;
+const likeBtns = document.getElementsByClassName('like-btn');
+Array.from(likeBtns).forEach((btn) => {
+    btn.addEventListener('click', () => {
 
-                let formData = new FormData();
-                formData.append("promptId", promptId);
-                formData.append("userId", userId);
+        let promptId = btn.dataset.promptid;
+        let userId = <?php echo $_SESSION['id']; ?>;
 
-                async function upload(formData) {
-                    try {
-                        const response = await fetch("ajax/likeprompt.php", {
-                        method: "POST",
-                        body: formData,
-                        });
-                        const result = await response.json();
-                        console.log("Success:", result);
-                    } catch (error) {
-                        console.error("Error:", error);
-                    }
-                    }
+        let formData = new FormData();
+        formData.append("promptId", promptId);
+        formData.append("userId", userId);
 
-                upload(formData);
-            });
-        });
-    </script>
-</body>
+        async function upload(formData) {
+            try {
+                const response = await fetch("ajax/likeprompt.php", {
+                method: "POST",
+                body: formData,
+                });
+                const result = await response.json();
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            }
+
+        upload(formData);
+    });
+});
+
+
+const detailBtns = document.querySelectorAll('.detail');
+Array.from(detailBtns).forEach((btn) => {
+btn.addEventListener('click', () => {
+    let promptId = btn.dataset.promptid;
+    window.location.href = `promptdetail.php?id=${promptId}`;
+});
+});
+
+
+</script>
 </html>

@@ -27,6 +27,7 @@ if (\PrompTopia\Framework\User::emailExists($email)) {
 		$user->setPassword($_POST["password"]);
 
 		$user->save();
+		$user->connectCreditSystem();
 		$validate = 'https://promptopia.azurewebsites.net/validate.php';
 
 		$email = new \SendGrid\Mail\Mail(); 
