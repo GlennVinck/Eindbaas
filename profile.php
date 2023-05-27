@@ -64,15 +64,24 @@ $biography = $user->getBiography();
                 <?php include "assets/promptcard.php"; ?>
                 <form action="remove_prompt.php" method="post" class="remove-prompt-form">
                     <input type="hidden" name="prompt_id" value="<?php echo $prompt['id']; ?>">
-                    <button type="submit" class="remove-prompt-button">Remove</button>
+                    <button type="button" class="remove-prompt-button" onclick="confirmPromptRemoval(this)">Remove</button>
                 </form>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p style="color:red;">No prompts from this user.</p>
+        <p>No prompts found here..</p>
+        <a href="index.php">Upload new prompt</a>
     <?php endif; ?>
 </div>
 <!-- End of Prompts -->
+
+<script>
+    function confirmPromptRemoval(button) {
+        if (confirm("Are you sure you want to remove your prompt?")) {
+            button.parentNode.submit();
+        }
+    }
+</script>
 
 
 
