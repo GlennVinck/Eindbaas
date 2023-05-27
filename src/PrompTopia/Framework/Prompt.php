@@ -178,7 +178,18 @@ public function getPrice()
         $statement->bindValue(":tags", $this->getTags());
         $statement->bindValue(":userId", $this->getUserId());
         $result = $statement->execute();
-        return $result;
+        
+        if ($result) {
+            // Update user credits (+2)
+            $userId = $this->getUserId();
+            $statement = $conn->prepare("UPDATE credits SET balance = balance + 2 WHERE user_id = :userId");
+            $statement->bindValue(":userId", $userId);
+            $statement->execute();
+    
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static function notApproved()
