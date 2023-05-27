@@ -78,21 +78,11 @@ $profile_picture = $user['profile_picture'];
     <!-- Error and Success Messages -->
 
     <!-- Show prompts from the user-->
-    <?php foreach ($prompts as $prompt): ?>
-    <div class="prompt">
-
-        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["username"]);?></a></h4> 
-
-        <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
-        <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
-        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
-        <p><?php echo $prompt["price"]; ?></p>
-        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
-        <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
-        <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
+        <div class="prompts">
+        <?php foreach($prompts as $prompt): ?>
+            <?php include "assets/promptcard.php"; ?>
+        <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
 
     <script src="js/main.js"></script>
 </body>

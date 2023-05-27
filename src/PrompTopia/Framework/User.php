@@ -385,7 +385,7 @@ class User
     }
 
 
-public function checkResetToken($token) {
+    public function checkResetToken($token) {
         $conn = Db::getInstance(); // Get the database connection
     
         // Code to check if the token exists and is not expired
@@ -398,7 +398,23 @@ public function checkResetToken($token) {
     }
     
 
+    public static function getById($id){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 
+    public static function getByUsername($username){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
 
 
 

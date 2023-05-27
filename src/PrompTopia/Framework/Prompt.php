@@ -234,13 +234,15 @@ public function getPrice()
     }
     
     public static function getAllFromUser($username)
-{
-    $conn = Db::getInstance();
-    $statement = $conn->prepare("SELECT p.*, u.username FROM prompts AS p INNER JOIN users AS u ON p.user_id = u.id WHERE u.username = :username");
-    $statement->bindValue(":username", $username);
-    $statement->execute();
-    return $statement->fetchAll(\PDO::FETCH_ASSOC);
-}
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT p.*, u.username FROM prompts AS p INNER JOIN users AS u ON p.user_id = u.id WHERE u.username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
 
 
 }

@@ -16,7 +16,7 @@ $cloudinary = new Cloudinary(
 
 <div class="prompt">
     <div class="detail" data-promptid="<?php echo $prompt['id']; ?>">
-        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["usrname"]);?></a></h4> 
+        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["username"]);?></a></h4> 
         <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2>
         <h3><?php echo htmlspecialchars( $prompt["prompt"]); ?></h3>
         <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
