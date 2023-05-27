@@ -224,14 +224,16 @@ public function getPrice()
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public static function getPromptByUserId($user_id)
-    {
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = :user_id and id = :id");
-        $statement->bindValue(":userId", $user_id);
-        $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
-    }
+    public static function getPromptByUserId($username, $promptId)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT * FROM prompts WHERE user_id = (SELECT id FROM users WHERE username = :username) AND id = :promptId");
+    $statement->bindValue(":username", $username);
+    $statement->bindValue(":promptId", $promptId);
+    $statement->execute();
+    return $statement->fetchAll(\PDO::FETCH_ASSOC);
+}
+
     
     public static function getAllFromUser($username)
     {
@@ -241,6 +243,15 @@ public function getPrice()
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public static function deletePrompt($promptId)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("DELETE FROM prompts WHERE id = :id");
+    $statement->bindValue(":id", $promptId);
+    $statement->execute();
+}
+
 
 
 

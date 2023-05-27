@@ -58,12 +58,21 @@ $biography = $user->getBiography();
 <!-- Prompts -->
 <h1 style="margin: 60px; text-align: center;">Your Prompts</h1>
 <div class="prompts">
+    <?php if (count($prompts) > 0): ?>
         <?php foreach($prompts as $prompt): ?>
-            <?php include "assets/promptcard.php"; ?>
+            <div class="prompt-card">
+                <?php include "assets/promptcard.php"; ?>
+                <form action="remove_prompt.php" method="post" class="remove-prompt-form">
+                    <input type="hidden" name="prompt_id" value="<?php echo $prompt['id']; ?>">
+                    <button type="submit" class="remove-prompt-button">Remove</button>
+                </form>
+            </div>
         <?php endforeach; ?>
-    </div>
+    <?php else: ?>
+        <p style="color:red;">No prompts from this user.</p>
+    <?php endif; ?>
+</div>
 <!-- End of Prompts -->
-
 
 
 
