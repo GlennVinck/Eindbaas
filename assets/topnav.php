@@ -27,6 +27,7 @@
                 // display "My Profile" and "Log out" link
                 echo '<li class="topnav-menu-item"><a href="profile.php">My Profile</a></li>';
                 echo '<li class="topnav-menu-item"><a href="logout.php">Log Out</a></li>';
+                echo '<li class="topnav-menu-item"><a href="upload.php">Upload</a></li>';
             } else {
                 // display "Login" and "Register" links
                 echo '<li class="topnav-menu-item"><a href="login.php">Log In</a></li>';

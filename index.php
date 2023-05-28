@@ -7,36 +7,6 @@ if($_SESSION['loggedin'] !== true){
 
 $categories = \PrompTopia\Framework\Prompt::categories();
 
-if(!empty($_POST)){
-    if(isset($_FILES['img'])){
-        try{
-            $img = new \PrompTopia\Framework\Img($cloudinary);
-            $imgName = $img->upload($_FILES['img']);
-            $prompt = new \PrompTopia\Framework\Prompt();
-            $prompt->setTitle($_POST["title"]);
-            $prompt->setPrompt($_POST["prompt"]);
-            $prompt->setImg($imgName);
-            $prompt->setPrice($_POST["price"]);
-            $prompt->setType($_POST["type"]);
-            $prompt->setTags($_POST["tags"]);
-            $prompt->setUserId($_SESSION['id']);
-            $prompt->save();
-            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-            $offset = ($page - 1) * 10;
-            $prompts = \PrompTopia\Framework\Prompt::getAll($offset);
-            $totalPrompts = \PrompTopia\Framework\Prompt::countAll();
-            $totalPages = ceil($totalPrompts / 10);
-        }
-        catch (Throwable $e) {
-            $error = $e->getMessage();
-        }
-        
-    } else {
-        $error = "Please upload an image";
-    }
-   
-}
-
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $offset = ($page - 1) * 10;
 $prompts = \PrompTopia\Framework\Prompt::getAll($offset);
@@ -78,52 +48,6 @@ if (isset($_GET['filter'])) {
         echo "<p>Welcome, you are not an admin.</p>";
     }
     ?>
-
-    <form action="" method="post" enctype="multipart/form-data">
-        <?php if(isset($error)): ?>
-            <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?> 
-        <div class="prompt_field">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title">
-        </div>
-        <div class="prompt_field"> 
-            <label for="prompt">Prompt</label>
-            <input type="text" id="prompt" name="prompt">
-        </div>
-        <div class="prompt_field">
-            <label for="img">Selecteer een bestand:</label>
-            <input type="file" name="img" id="img">
-        </div>
-        <div class="prompt_field"> 
-            <label for="price">Prijs</label>
-            <select name="price" id="price">
-                <option value="free">Free</option>
-                <option value="1credit">1 credit</option>
-                <option value="2credits">2 credits</option>
-            </select>
-        </div>
-       <div class="prompt_field">  
-            <label for="type">Waar voerde je dit prompt in?</label>
-            <input type="text" id="type" name="type">
-        </div>
-       <div class="prompt_field">
-            <label for="tags">Free tags</label>
-            <input type="text" id="tags" name="tags">
-        </div>
-        <ul class="items">
-        <?php foreach($categories as $categorie):?>
-            <li>
-                <input name="categories[]" type="checkbox" value="<?php echo $categorie["id"]?>" /> 
-                <?php echo $categorie["name"]?> 
-            </li>
-        <?php endforeach;?>
-    </ul>
-        <div class="prompt_field" >
-            <input type="submit" value="Post" class="btn">
-        </div>
-        
-    </form>
 
     <form action="" method="get">
     <label for="filter">Filter on price</label>
