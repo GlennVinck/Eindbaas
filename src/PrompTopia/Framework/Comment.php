@@ -59,14 +59,13 @@ class Comment{
         $statement->bindValue(":promptid", $promptId);
         $statement->bindValue(":userid", $userId);
         return $statement->execute();
-    }
-
-    public static function getFavourites($promptId, $userId){
-        $conn = Db::getInstance();
-        $statement = $conn->prepare("SELECT * FROM favourites WHERE prompt_id = :promptid AND user_id = :userid");
-        $statement->bindValue(":promptid", $promptId);
-        $statement->bindValue(":userid", $userId);
-        $statement->execute();
-        return $statement->fetch(\PDO::FETCH_ASSOC);
     }*/
+
+    public static function getComments($promptId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT comments.*, users.username FROM comments JOIN users ON comments.user_id = users.id WHERE comments.prompt_id = :promptid");
+        $statement->bindValue(":promptid", $promptId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

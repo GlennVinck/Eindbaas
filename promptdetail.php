@@ -7,6 +7,7 @@ use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
 if (isset($_GET['id'])) {
     $promptId = $_GET['id'];
     $prompt = \PrompTopia\Framework\Prompt::getPromptDetails($promptId);
+    $comments = \PrompTopia\Framework\Comment::getComments($promptId);
 } else {
     // Handle the case when the ID is not present in the URL
     echo "Prompt ID is missing from the URL.";
@@ -44,10 +45,18 @@ if (isset($_GET['id'])) {
 </div>
 <div class="comments-wrap">
     <div class="comments-form">
-        <input type="text" name="comment" id="comment" placeholder="Write a comment" require>
+        <input type="text" name="comment" id="comment" placeholder="Write a comment">
         <a href="" class="comment-btn" id="btnAddComment">Add comment</a>
     </div>
     <div class="comments-list">
+        <ul id="comments">
+            <?php foreach ($comments as $comment): ?>
+                <li>
+                    <h4><?php echo htmlspecialchars($comment["username"]); ?></h4>
+                    <p><?php echo htmlspecialchars($comment["comment"]); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 </div>
 
