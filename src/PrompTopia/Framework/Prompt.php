@@ -180,12 +180,6 @@ public function getPrice()
         $result = $statement->execute();
         
         if ($result) {
-            // Update user credits (+2)
-            $userId = $this->getUserId();
-            $statement = $conn->prepare("UPDATE credits SET balance = balance + 2 WHERE user_id = :userId");
-            $statement->bindValue(":userId", $userId);
-            $statement->execute();
-    
             return true;
         } else {
             return false;
@@ -206,7 +200,12 @@ public function getPrice()
         $conn = Db::getInstance();
         $statement = $conn->prepare("UPDATE prompts SET approved = 1 WHERE id = :id");
         $statement->bindValue(":id", $id);
-        $statement->execute();
+        $result = $statement->execute();
+
+        if ($result) {
+            $prompt = self::getPromptDetails($id);
+            self::updateUserCreditsOnApproval($prompt['user_id'], 2);
+        }
     }
 
     public static function categories()
@@ -281,9 +280,12 @@ public static function getPromptsCountByUser($userId)
     return $statement->fetchColumn();
 }
 
-
-
-
-
-
+public static function updateUserCreditsOnApproval($userId, $credits)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("UPDATE credits SET balance = balance + :credits WHERE user_id = :userId");
+        $statement->bindValue(":credits", $credits);
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+    }
 }
