@@ -44,19 +44,10 @@ if (isset($_GET['id'])) {
 </div>
 <div class="comments-wrap">
     <div class="comments-form">
-        <input type="text" name="comment" id="comment" placeholder="Write a comment">
-        <a href="" class="comment-btn">Add comment</a>
+        <input type="text" name="comment" id="comment" placeholder="Write a comment" require>
+        <a href="" class="comment-btn" id="btnAddComment">Add comment</a>
     </div>
     <div class="comments-list">
-        <?php
-        //$comments = \PrompTopia\Framework\Prompt::getComments($promptId);
-        foreach ($comments as $comment) {
-            echo "<div class='comment'>";
-            echo "<h4><a href='otherUser.php?username=" . htmlspecialchars($comment["username"]) . "'>" . htmlspecialchars($comment["username"]) . "</a></h4>";
-            echo "<p>" . htmlspecialchars($comment["comment"]) . "</p>";
-            echo "</div>";
-        }
-        ?>
     </div>
 </div>
 
@@ -115,6 +106,38 @@ Array.from(likeBtns).forEach((btn) => {
 
         upload(formData);
     });
+});
+
+document.querySelector("#btnAddComment").addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let comment = document.querySelector("#comment").value;
+    let promptId = document.querySelector(".prompt_details").dataset.promptid;
+    let userId = <?php echo $_SESSION['id']; ?>;
+
+    console.log(comment);
+    console.log(promptId);
+    console.log(userId);
+
+    let formData = new FormData();
+    formData.append("comment", comment);
+    formData.append("promptId", promptId);
+    formData.append("userId", userId);
+
+    async function upload(formData) {
+        try {
+            const response = await fetch("ajax/addcomment.php", {
+            method: "POST",
+            body: formData,
+            });
+            const result = await response.json();
+            console.log("Success:", result);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+        }
+
+    upload(formData);
 });
 </script>
 
