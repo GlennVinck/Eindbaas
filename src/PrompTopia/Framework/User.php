@@ -413,6 +413,16 @@ class User
         return $result;
     }
 
+    public function setVerified($verified)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE users SET verified = :verified WHERE id = :userId");
+    $statement->bindValue(":verified", $verified, \PDO::PARAM_BOOL);
+    $statement->bindValue(":userId", $this->getId());
+    $statement->execute();
+}
+
+
 
 
 }

@@ -26,6 +26,14 @@ $likedPrompts = \PrompTopia\Framework\Like::getLikedPromptsByUser($_SESSION['use
 $user = new \PrompTopia\Framework\User();
 $biography = $user->getBiography();
 
+// Verified
+$promptsCount = \PrompTopia\Framework\Prompt::getPromptsCountByUser($_SESSION['id']);
+$isVerified = $promptsCount >= 3;
+
+$user = new \PrompTopia\Framework\User();
+$user->setId($_SESSION['id']);
+$user->setVerified($isVerified);
+
 
 
 ?>
@@ -45,6 +53,9 @@ $biography = $user->getBiography();
 <?php include_once "assets/topnav.php"; ?>
 <a href="edit_profile.php">Edit Profile</a>
 
+<?php if ($isVerified): ?>
+    <span class="verified-icon" style="font-size:100px;">Verified</span>
+<?php endif; ?>
 
 <!-- Username -->
 <div class="username-profile">

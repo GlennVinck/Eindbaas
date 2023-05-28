@@ -263,6 +263,16 @@ public function getPrice()
     $statement->execute();
 }
 
+public static function getPromptsCountByUser($userId)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT COUNT(*) FROM prompts WHERE user_id = :userId AND approved = 1");
+    $statement->bindValue(":userId", $userId);
+    $statement->execute();
+    return $statement->fetchColumn();
+}
+
+
 
 
 
