@@ -49,7 +49,15 @@ class Comment{
         $statement->bindValue(":userid", $this->getUserId());
         $statement->bindValue(":promptid", $this->getPromptId());
         $statement->bindValue(":comment", $this->getComment());
-        return $statement->execute();
+        $result = $statement->execute();
+
+        if ($result) {
+            // Update user credits after successful comment
+            $userId = $this->getUserId();
+            self::updateUserCreditsOnComment($userId, 2);
+        }
+    
+        return $result;
     }
 
     /*public static function removeFavourite($promptId, $userId){
@@ -68,4 +76,13 @@ class Comment{
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public static function updateUserCreditsOnComment($userId, $credits)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("UPDATE credits SET balance = balance + :credits WHERE user_id = :userId");
+    $statement->bindValue(":credits", $credits);
+    $statement->bindValue(":userId", $userId);
+    $statement->execute();
+}
 }
