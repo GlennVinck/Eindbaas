@@ -278,11 +278,14 @@ body{
 }
 
 .favourite-btn {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: none;
-  background-color: #ffffff;
+  background-image: url(../images/star.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   cursor: pointer;
   transition: .3s;
   display: flex;
