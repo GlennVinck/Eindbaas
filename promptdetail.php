@@ -7,6 +7,7 @@ use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
 if (isset($_GET['id'])) {
     $promptId = $_GET['id'];
     $prompt = \PrompTopia\Framework\Prompt::getPromptDetails($promptId);
+    $comments = \PrompTopia\Framework\Comment::getComments($promptId);
 } else {
     // Handle the case when the ID is not present in the URL
     echo "Prompt ID is missing from the URL.";
@@ -45,18 +46,17 @@ if (isset($_GET['id'])) {
 <div class="comments-wrap">
     <div class="comments-form">
         <input type="text" name="comment" id="comment" placeholder="Write a comment">
-        <a href="" class="comment-btn">Add comment</a>
+        <a href="" class="comment-btn" id="btnAddComment">Add comment</a>
     </div>
     <div class="comments-list">
-        <?php
-        //$comments = \PrompTopia\Framework\Prompt::getComments($promptId);
-        foreach ($comments as $comment) {
-            echo "<div class='comment'>";
-            echo "<h4><a href='otherUser.php?username=" . htmlspecialchars($comment["username"]) . "'>" . htmlspecialchars($comment["username"]) . "</a></h4>";
-            echo "<p>" . htmlspecialchars($comment["comment"]) . "</p>";
-            echo "</div>";
-        }
-        ?>
+        <ul id="comments">
+            <?php foreach ($comments as $comment): ?>
+                <li>
+                    <h4><?php echo htmlspecialchars($comment["username"]); ?></h4>
+                    <p><?php echo htmlspecialchars($comment["comment"]); ?></p>
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 </div>
 
@@ -115,6 +115,38 @@ Array.from(likeBtns).forEach((btn) => {
 
         upload(formData);
     });
+});
+
+document.querySelector("#btnAddComment").addEventListener("click", (e) => {
+    e.preventDefault();
+
+    let comment = document.querySelector("#comment").value;
+    let promptId = document.querySelector(".prompt_details").dataset.promptid;
+    let userId = <?php echo $_SESSION['id']; ?>;
+
+    console.log(comment);
+    console.log(promptId);
+    console.log(userId);
+
+    let formData = new FormData();
+    formData.append("comment", comment);
+    formData.append("promptId", promptId);
+    formData.append("userId", userId);
+
+    async function upload(formData) {
+        try {
+            const response = await fetch("ajax/addcomment.php", {
+            method: "POST",
+            body: formData,
+            });
+            const result = await response.json();
+            console.log("Success:", result);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+        }
+
+    upload(formData);
 });
 </script>
 
