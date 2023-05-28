@@ -182,7 +182,7 @@ if (isset($_POST['saveBiography'])) {
 
 <!-- Username -->
 <div class="username-profile">
-    <h1 style="margin:100px;">Hello <?php echo $_SESSION['username'];?></h1>
+    <h1 style="margin:100px;">Hello <?php echo htmlspecialchars($_SESSION['username']); ?></h1>
 <form action="profile.php" method="POST">
     <label for="newUsername">Change Username:</label>
     <input type="text" id="newUsername" name="newUsername" required>
@@ -195,7 +195,7 @@ if (isset($_POST['saveBiography'])) {
 
 <!-- Profile Picture -->
 <div class="form"> 
-    <img id="profilePicture-display" src="<?php echo $profilePicture; ?>" alt="Profile Picture" width="200">
+    <img id="profilePicture-display" src="<?php echo htmlspecialchars($profilePicture); ?>" alt="Profile Picture" width="200">
 <form class="profilePicture-profile" action="" method="POST" enctype="multipart/form-data">
     <label for="newProfilePicture">Change Profile Picture:</label>
     <input id="profilePicture-upload" type="file" name="newProfilePicture" accept="image/*" required>
@@ -207,10 +207,10 @@ if (isset($_POST['saveBiography'])) {
 
 <!-- ⛔️ error and succes messages ⛔️ -->
 <?php if (isset($error)): ?>
-    <p style="color: red; font-weight: 800;">Error: <?php echo $error; ?></p>
+    <p style="color: red; font-weight: 800;">Error: <?php echo htmlspecialchars($error); ?></p>
 <?php endif; ?>
 <?php if (isset($success)): ?>
-    <p style="color: lime; font-weight: 800;">Boom! <?php echo $success; ?></p>
+    <p style="color: lime; font-weight: 800;">Boom! <?php echo htmlspecialchars($success); ?></p>
 <?php endif; ?>
 <!-- ⛔️ error and succes messages ⛔️ -->
 
@@ -220,8 +220,8 @@ if (isset($_POST['saveBiography'])) {
 <div class="biography-profile">
 <form class="form-right" action="" method="POST">
     <label for="biography">Biography:</label>
-    <p id="bio-display"><?php echo $biography; ?></p>
-    <textarea id="bio-textarea" name="biography"><?php echo $biography; ?></textarea>
+    <p id="bio-display"><?php echo htmlspecialchars($biography); ?></p>
+    <textarea id="bio-textarea" name="biography"><?php echo htmlspecialchars($biography);?></textarea>
     <button type="submit" name="saveBiography">Change</button>
 </form>
 </div>

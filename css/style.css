@@ -515,6 +515,25 @@ body{
     text-align: center;
   }
 
+  .verified {
+    color: #10efd4;
+    margin: 20px;
+    position: relative;
+    bottom: 80px;
+    text-align: center;
+  }
+
+  .credits {
+    color: gold;
+    margin: 20px;
+    position: relative;
+    top: 200px;
+    text-align: center;
+  }
+
+
+
+
   .pagination {
     display: flex;
     justify-content: center;
