@@ -263,8 +263,14 @@ public function getPrice()
     $statement->execute();
 }
 
-
-
-
+public static function getPromptDetails($promptId)
+{
+    $conn = Db::getInstance();
+    $statement = $conn->prepare("SELECT prompts.*, users.username FROM prompts JOIN users ON prompts.user_id = users.id WHERE prompts.id = :id");
+    $statement->bindValue(":id", $promptId, \PDO::PARAM_INT); 
+    $statement->execute();
+    $prompt = $statement->fetch(\PDO::FETCH_ASSOC);
+    return $prompt;
+}
 
 }

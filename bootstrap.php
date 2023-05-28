@@ -1,10 +1,12 @@
 <?php
     //autoload classes
     require_once __DIR__ . '/vendor/autoload.php';
-    
     $config = parse_ini_file( "config/config.ini");
 
 
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
     use Cloudinary\Cloudinary;
     use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
 

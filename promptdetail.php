@@ -1,27 +1,16 @@
-<?php 
+<?php
 include_once (__DIR__ . "/bootstrap.php");
-$config = parse_ini_file( "config/config.ini");
+
+use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
 
 // Check if the ID is present in the URL
 if (isset($_GET['id'])) {
     $promptId = $_GET['id'];
-    echo $promptId;
-    // Use the $promptId to fetch the details of the prompt from your data source
-    // ...
-    // Your code to fetch the prompt details based on the ID
-    // ...
-
-    // Example usage:
-    // echo "Prompt ID: " . $promptId;
-    // Display the details of the prompt on the detail page
-    // ...
-    // Your code to display the prompt details
-    // ...
+    $prompt = \PrompTopia\Framework\Prompt::getPromptDetails($promptId);
 } else {
     // Handle the case when the ID is not present in the URL
     echo "Prompt ID is missing from the URL.";
-};
-
+}
 
 ?>
 <!DOCTYPE html>
@@ -38,10 +27,96 @@ if (isset($_GET['id'])) {
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
-<h1 style="margin:100px;">Dit is de marktplaats</h1>
+<h1 style="margin:100px;">Promptdetail</h1>
 
+<div class="prompt_wrap">
+    <div class="prompt_details" data-promptid="<?php echo $prompt['id']; ?>">
+        <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]);?>"><?php echo htmlspecialchars($prompt["username"]);?></a></h4> 
+        <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2>
+        <h3><?php echo htmlspecialchars( $prompt["prompt"]); ?></h3>
+        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
+        <p><?php echo $prompt["price"]; ?></p>
+        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
+        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+    </div>
+    <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
+    <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
+</div>
+<div class="comments-wrap">
+    <div class="comments-form">
+        <input type="text" name="comment" id="comment" placeholder="Write a comment">
+        <a href="" class="comment-btn">Add comment</a>
+    </div>
+    <div class="comments-list">
+        <?php
+        //$comments = \PrompTopia\Framework\Prompt::getComments($promptId);
+        foreach ($comments as $comment) {
+            echo "<div class='comment'>";
+            echo "<h4><a href='otherUser.php?username=" . htmlspecialchars($comment["username"]) . "'>" . htmlspecialchars($comment["username"]) . "</a></h4>";
+            echo "<p>" . htmlspecialchars($comment["comment"]) . "</p>";
+            echo "</div>";
+        }
+        ?>
+    </div>
+</div>
 
+<script>
+const favouriteBtns = document.getElementsByClassName('favourite-btn');
+Array.from(favouriteBtns).forEach((btn) => {
+    btn.addEventListener('click', () => {
 
+        let promptId = btn.dataset.promptid;
+        let userId = <?php echo $_SESSION['id']; ?>;
+
+        let formData = new FormData();
+        formData.append("promptId", promptId);
+        formData.append("userId", userId);
+
+        async function upload(formData) {
+            try {
+                const response = await fetch("ajax/favouriteprompt.php", {
+                method: "POST",
+                body: formData,
+                });
+                const result = await response.json();
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            }
+
+        upload(formData);
+    });
+});
+
+const likeBtns = document.getElementsByClassName('like-btn');
+Array.from(likeBtns).forEach((btn) => {
+    btn.addEventListener('click', () => {
+
+        let promptId = btn.dataset.promptid;
+        let userId = <?php echo $_SESSION['id']; ?>;
+
+        let formData = new FormData();
+        formData.append("promptId", promptId);
+        formData.append("userId", userId);
+
+        async function upload(formData) {
+            try {
+                const response = await fetch("ajax/likeprompt.php", {
+                method: "POST",
+                body: formData,
+                });
+                const result = await response.json();
+                console.log("Success:", result);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+            }
+
+        upload(formData);
+    });
+});
+</script>
 
 </body>
 </html>

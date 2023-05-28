@@ -1,7 +1,6 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-
 if(!empty($_POST)) {
     try {
         $email = $_POST["email"];

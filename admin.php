@@ -1,9 +1,5 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include_once (__DIR__ . "/bootstrap.php");
-$config = parse_ini_file("config/config.ini");
 
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
