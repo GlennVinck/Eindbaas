@@ -8,31 +8,35 @@ if(!isset($_SESSION['username'])) {
     exit;
 }
 
+
+use PrompTopia\Framework\User;
+use PrompTopia\Framework\Prompt;
+use PrompTopia\Framework\Like;
+
+// Get User
+$user = new User();
+$user->setId($_SESSION['id']);
+
 // Credits
-$user = new \PrompTopia\Framework\User();
 $credits = $user->getCredits();
 
-//Profile Picture
-$user = new \PrompTopia\Framework\User();
+// Profile Picture
 $profilePicture = $user->getProfilePicture();
 
 // Prompts 
-$prompts = \PrompTopia\Framework\Prompt::getAllFromUser($_SESSION['username']);
+$prompts = Prompt::getAllFromUser($_SESSION['username']);
 
 // Liked Prompts
-$likedPrompts = \PrompTopia\Framework\Like::getLikedPromptsByUser($_SESSION['username']);
+$likedPrompts = Like::getLikedPromptsByUser($_SESSION['username']);
 
 // Biography
-$user = new \PrompTopia\Framework\User();
 $biography = $user->getBiography();
 
 // Verified
-$promptsCount = \PrompTopia\Framework\Prompt::getPromptsCountByUser($_SESSION['id']);
+$promptsCount = Prompt::getPromptsCountByUser($_SESSION['id']);
 $isVerified = $promptsCount >= 3;
-
-$user = new \PrompTopia\Framework\User();
-$user->setId($_SESSION['id']);
 $user->setVerified($isVerified);
+
 
 
 

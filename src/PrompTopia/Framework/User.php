@@ -10,7 +10,6 @@ class User
     private $password;
     private $prompt_id;
     
-
     private $profilePicture;
 
     private $biography;
