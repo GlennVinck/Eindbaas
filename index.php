@@ -1,7 +1,7 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-if($_SESSION['loggedin'] !== true){
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header('Location: notloggedin.php');
 }
 
