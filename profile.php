@@ -61,14 +61,15 @@ $user->setVerified($isVerified);
 <?php include_once "assets/topnav.php"; ?>
 <a href="edit_profile.php">Edit Profile</a>
 
-<?php if ($isVerified): ?>
-    <span class="verified-icon" style="font-size:100px;">Verified</span>
-<?php endif; ?>
+
 
 <!-- Username -->
 <div class="username-profile">
     <h1 style="margin:100px;">Hello <?php echo $_SESSION['username'];?></h1>
 </div>
+<?php if ($isVerified): ?>
+    <p class="verified">Verified    ✓⃝</p>
+<?php endif; ?>
 <!-- Username -->
 
 <!-- Credits -->
