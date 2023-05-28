@@ -200,6 +200,15 @@ public function getPrice()
         return $result;
     }  
 
+    public static function Approved()
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE approved = 0");
+        $statement->execute();
+        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    } 
+
     public static function approvePrompt($id)
     {
         $conn = Db::getInstance();
