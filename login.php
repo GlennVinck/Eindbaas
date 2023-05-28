@@ -1,14 +1,16 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
-if(!empty($_POST)) {
+$error = ""; // Initialize the error variable
+
+if (!empty($_POST)) {
     try {
         $email = $_POST["email"];
         $password = $_POST["password"];
         \PrompTopia\Framework\User::login($email, $password);
-	} catch (\Throwable $th) {
-		$error = $th->getMessage();
-	}
+    } catch (\Throwable $th) {
+        $error = $th->getMessage(); // Assign the error message to $error variable
+    }
 }
 
 ?><!DOCTYPE html>
@@ -33,11 +35,11 @@ if(!empty($_POST)) {
 				<h2 class="form-title">Log In</h2>
 				<h3 class="form-subtitle">Enter your credentials to log in to your account</h3>
 
-				<?php if( isset($error) ):?>
-					<div class="form__error">
-						<?php echo $error; ?>
-					</div>
-				<?php endif; ?>
+				<?php if ($error !== "") : ?>
+            <div class="form__error">
+                <?php echo $error; ?>
+            </div>
+        <?php endif; ?>
 
 				<div class="form__field">
 					<label for="Email">Email</label>

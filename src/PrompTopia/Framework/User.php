@@ -242,37 +242,33 @@ class User
         $conn = Db::getInstance();
         $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
         $statement->bindValue(":email", $email);
-        
+    
         $result = $statement->execute();
-
-        if($result) {
+    
+        if ($result) {
             $user = $statement->fetch(\PDO::FETCH_ASSOC);
-            if($user) {
+            if ($user) {
                 $hash = $user['password'];
-                if(password_verify($password, $hash)) {
-
+                if (password_verify($password, $hash)) {
                     session_start();
-
+    
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $user["username"];
                     $_SESSION["id"] = $user["id"];
-
+    
                     header("Location: index.php");
-                    
                     exit();
                 } else {
-                    throw new \Exception("Email or password is incorrect.");    
-
+                    throw new \Exception("Incorrect password.");
                 }
             } else {
-                return false;
-
+                throw new \Exception("User not found.");
             }
         } else {
-            return false;
-
+            throw new \Exception("An error occurred while executing the query.");
         }
     }
+    
     
     
     public static function isAdmin()
