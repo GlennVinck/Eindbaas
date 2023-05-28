@@ -52,4 +52,13 @@ class Like{
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public static function getLikedPromptsByUser($username)
+    {
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT p.* FROM likes l INNER JOIN prompts p ON l.prompt_id = p.id INNER JOIN users u ON l.user_id = u.id WHERE u.username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

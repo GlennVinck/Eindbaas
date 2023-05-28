@@ -19,12 +19,20 @@ $profilePicture = $user->getProfilePicture();
 // Prompts 
 $prompts = \PrompTopia\Framework\Prompt::getAllFromUser($_SESSION['username']);
 
-
-
+// Liked Prompts
+$likedPrompts = \PrompTopia\Framework\Like::getLikedPromptsByUser($_SESSION['username']);
 
 // Biography
 $user = new \PrompTopia\Framework\User();
 $biography = $user->getBiography();
+
+// Verified
+$promptsCount = \PrompTopia\Framework\Prompt::getPromptsCountByUser($_SESSION['id']);
+$isVerified = $promptsCount >= 3;
+
+$user = new \PrompTopia\Framework\User();
+$user->setId($_SESSION['id']);
+$user->setVerified($isVerified);
 
 
 
@@ -45,6 +53,9 @@ $biography = $user->getBiography();
 <?php include_once "assets/topnav.php"; ?>
 <a href="edit_profile.php">Edit Profile</a>
 
+<?php if ($isVerified): ?>
+    <span class="verified-icon" style="font-size:100px;">Verified</span>
+<?php endif; ?>
 
 <!-- Username -->
 <div class="username-profile">
@@ -85,6 +96,26 @@ $biography = $user->getBiography();
     <?php endif; ?>
 </div>
 <!-- End of Prompts -->
+
+
+<!-- Liked Prompts -->
+<h1 style="margin: 60px; text-align: center;">Liked Prompts</h1>
+<div class="prompts">
+    <?php if (count($likedPrompts) > 0): ?>
+        <?php foreach($likedPrompts as $prompt): ?>
+            <div class="prompt-card">
+                <?php include "assets/promptcard.php"; ?>
+                <form action="remove_prompt.php" method="post" class="remove-prompt-form">
+                    <input type="hidden" name="prompt_id" value="<?php echo $prompt['id']; ?>">
+                    <button type="button" class="remove-prompt-button" onclick="confirmPromptRemoval(this)">Remove</button>
+                </form>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>No liked prompts found here..</p>
+    <?php endif; ?>
+</div>
+<!-- End of Liked Prompts -->
 
 <script>
     function confirmPromptRemoval(button) {
