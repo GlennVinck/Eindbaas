@@ -43,7 +43,7 @@ $biography = $user->getBiography();
 
 if (!empty($_POST)) {
     $follow = new \PrompTopia\Framework\Follow();
-    $follow->setUserId($_SESSION['user_id']);
+    $follow->setUserId($_SESSION['id']);
     $followedId = \PrompTopia\Framework\User::getByUsername($_GET['username']);
     $follow->setFollowId($followedId['id']);
     $follow->save();
@@ -51,7 +51,7 @@ if (!empty($_POST)) {
 
 $follow = new \PrompTopia\Framework\Follow();
 $followedId = \PrompTopia\Framework\User::getByUsername($_GET['username']);
-if ($follow->checkIfFollowing($_SESSION['user_id'], $followedId['id']) == true) {
+if ($follow->checkIfFollowing($_SESSION['id'], $followedId['id']) == true) {
     $followed = true;
 } else {
     $followed = false;
