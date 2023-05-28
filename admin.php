@@ -57,15 +57,7 @@ if (!empty($_POST)) {
             <?php if (!empty($notApproved)) :
                 foreach ($notApproved as $prompt) :?>
                     <div class="prompt">
-                        <h2><?php echo htmlspecialchars($prompt["id"]); ?></h2>
-                        <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
-                        <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
-                        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl(); ?>" alt="">
-                        <p><?php echo $prompt["price"]; ?></p>
-                        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-                        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
-                        <input type="submit" name="accept_<?php echo $prompt['id']; ?>" value="accept">
-                        <input type="submit" name="reject_<?php echo $prompt['id']; ?>" value="reject">
+                    <?php include "assets/promptcardA.php"; ?>
                     </div>
                 <?php endforeach;
             else: ?>
@@ -73,5 +65,15 @@ if (!empty($_POST)) {
             <?php endif; ?>
         </div>
     </form>
+
+<script>
+const detailBtns = document.querySelectorAll('.detail');
+Array.from(detailBtns).forEach((btn) => {
+btn.addEventListener('click', () => {
+    let promptId = btn.dataset.promptid;
+    window.location.href = `promptdetail.php?id=${promptId}`;
+});
+});
+</script>
 </body>
 </html>
