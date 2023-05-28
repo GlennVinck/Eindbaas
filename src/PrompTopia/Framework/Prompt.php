@@ -180,7 +180,12 @@ public function getPrice()
         $result = $statement->execute();
         
         if ($result) {
-            return true;
+            $lastInsertId = $conn->lastInsertId(); // Get the ID of the newly inserted prompt
+            $this->setId($lastInsertId); // Set the ID in the Prompt object
+    
+            // Redirect the user to the detail page of the prompt
+            header("Location: promptdetail.php?id=$lastInsertId");
+            exit();
         } else {
             return false;
         }
