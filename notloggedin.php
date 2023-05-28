@@ -48,12 +48,12 @@ $totalPages = ceil($totalPrompts / 10);
         <h2>Dall-E, Stable Diffusion, Midjourney</h2>
         <h1>Prompt sharing platform for <br> <span>Experience Design</span> students</h1>
         <div>
-            <a>Search prompts</a>
-            <a>Log In</a>
+            <a href="marketplace.php">Search prompts</a>
+            <a href="login.php">Log In</a>
         </div>
-    </div>
+        <p class="login-disclaimer">*login to see full prompt details.</p>
 
-<a href="login.php">login to see full prompt</a>
+    </div>
 <div class="prompts">
         <?php foreach($prompts as $prompt): ?>
             <div class="prompt">

@@ -19,6 +19,10 @@ if (isset($_GET['search'])) {
     $prompts = \PrompTopia\Framework\Prompt::getAll();
 }
 
+if (isset($_GET['filter'])) {
+    $prompts = \PrompTopia\Framework\Prompt::getFiltered($_GET['filter']);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -37,11 +41,45 @@ if (isset($_GET['search'])) {
 <?php include_once "assets/topnav.php"; ?>
 <h1 style="margin:100px;">Dit is de marktplaats</h1>
 
+<form action="" method="get">
+    <label for="filter">Filter on price</label>
+    <select name="filter">
+        <option value="0">Free</option>
+        <option value="1">1 credit</option>
+        <option value="2">2 credits</option>
+    </select>
+    <input type="submit" value="Filter" class="btn btn--primary btn--filter">
+    </form>
+
+<?php
+    if (isset($_GET['filter'])) {
+        $selected_value = $_GET['filter'];
+        $label = "";
+        
+        switch ($selected_value) {
+            case "0":
+                $label = "Free";
+                break;
+            case "1":
+                $label = "1 credit";
+                break;
+            case "2":
+                $label = "2 credits";
+                break;
+            default:
+                $label = "Unknown";
+                break;
+        }
+        
+        echo "You selected: " . $label;
+    }
+    ?> 
+
 <div class="prompts">
-        <?php foreach($prompts as $prompt): ?>
-            <?php include "assets/promptcard.php"; ?>
-        <?php endforeach; ?>
-    </div>
+    <?php foreach($prompts as $prompt): ?>
+        <?php include "assets/promptcard.php"; ?>
+    <?php endforeach; ?>
+</div>
 
 
     <!-- Teller om van pagina te veranderen voor volgende prompts te zien -->

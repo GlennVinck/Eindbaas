@@ -42,6 +42,7 @@ body{
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
+    background-color: #020c0b;
 }
 
 .topnav-title{
@@ -152,7 +153,6 @@ body{
 .hero-wrapper h2{
     font-size: 2em;
     font-weight: 400;
-    background-color: #f3ec78;
     background-image: linear-gradient(45deg, #0FF046, #10efd4);
     background-size: 100%;
     -webkit-background-clip: text;
@@ -170,7 +170,7 @@ body{
 }
 
 .hero-wrapper span{
-    color: #a90ff0;
+    color: #F47533;
 }
 
 .hero-wrapper div{
@@ -193,6 +193,7 @@ body{
   font-family: Finlandica,sans-serif;
   cursor: pointer;
   transition: .3s;
+  text-decoration: none;
 }
 
 .hero-wrapper a:nth-child(2){
@@ -209,13 +210,106 @@ body{
   font-family: Finlandica,sans-serif;
   cursor: pointer;
   transition: .3s;
+  text-decoration: none;
 }
 
 .hero-wrapper a:hover {
   opacity: .6;
 }
 
+.login-disclaimer{
+    font-size: 0.8em;
+    color: #8b8b8b;
+    margin-top: 1em;
+}
 
+.prompts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: center;
+    justify-items: center;
+    grid-gap: 1em;
+    padding: 1em;
+    margin: 0;
+
+}
+
+.prompt-gradient{
+    border-radius: 1em;
+    padding: 1px;
+    background-image: linear-gradient(45deg, rgba(15, 240, 70, 0.6), rgba(16, 239, 212, 0.6));
+}
+
+.prompt {
+    width: 240px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #020c0b;
+    border-radius: 1em;
+}
+
+.prompt-header img {
+    width: 100%;
+    border-radius: 1em 1em 0 0;
+    object-fit: cover;
+    border-radius: 1em;
+  }
+
+.prompt-header div {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  left: 8px;
+}
+
+.favourite-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prompt-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1em 0 1em;
+    margin: 4px 0 0 0;
+  }
+
+  .prompt-details h2 {
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+  }
+
+  .prompt-details p {
+    padding: 0;
+    margin: 0;
+  }
+
+  .tags {
+    font-weight: 200;
+    color: #3a5f5b;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0.5em 1em 0.5em 1em;
+    margin: 8px 0 4px 0;
+  }
 
 .PromptopiaRegister {
     height: 100vh;

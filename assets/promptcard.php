@@ -12,18 +12,20 @@ $cloudinary = new Cloudinary([
 ]);
 ?>
 
+<div class="prompt-gradient">
 <div class="prompt">
     <div class="detail" data-promptid="<?php echo $prompt['id']; ?>">
-        <?php if (isset($prompt["username"])): ?>
-            <h4><a href="otherUser.php?username=<?php echo htmlspecialchars($prompt["username"]); ?>"><?php echo htmlspecialchars($prompt["username"]); ?></a></h4>
-        <?php endif; ?>
-        <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
-        <h3><?php echo htmlspecialchars($prompt["prompt"]); ?></h3>
-        <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl(); ?>" alt="">
-        <p><?php echo $prompt["price"]; ?></p>
-        <p><?php echo htmlspecialchars($prompt["type"]); ?></p>
-        <p><?php echo htmlspecialchars($prompt["tags"]); ?></p>
+        <div class="prompt-header">
+            <div>
+                <a class="favourite-btn" onclick="event.stopPropagation()" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>"></a>
+            </div>
+            <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl(); ?>" alt="">
+        </div>
+        <div class="prompt-details">
+            <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
+            <p><?php echo $prompt["price"]; ?> cr</p>
+        </div>
+        <p class="tags"><?php echo htmlspecialchars($prompt["type"]); ?></p>
     </div>
-    <a class="favourite-btn" style="color: yellow" data-promptid="<?php echo $prompt['id']; ?>">FAVOURITE</a>
-    <a class="like-btn" style="color: blue" data-promptid="<?php echo $prompt['id']; ?>">LIKE</a>
+</div>
 </div>

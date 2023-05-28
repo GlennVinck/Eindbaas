@@ -18,10 +18,6 @@ if (isset($_SESSION['id'])) {
     $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
 }
 
-if (isset($_GET['filter'])) {
-    $prompts = \PrompTopia\Framework\Prompt::getFiltered($_GET['filter']);
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -38,57 +34,14 @@ if (isset($_GET['filter'])) {
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
-    <!-- <?php
-    // Display the admin status if the user is logged in
-    if ($isAdmin) {
-        echo "<p>Welcome, you are an admin!</p>";
-    } else {
-        echo "<p>Welcome, you are not an admin.</p>";
-    }
-    ?> -->
-
-<div class="hero-wrapper">
+    <div class="hero-wrapper">
         <h2>Dall-E, Stable Diffusion, Midjourney</h2>
         <h1>Prompt sharing platform for <br> <span>Experience Design</span> students</h1>
         <div>
-            <a>Search prompts</a>
-            <a>Log In</a>
+            <a href="marketplace.php">Search prompts</a>
+            <a href="upload.php">Upload a prompt</a>
         </div>
     </div>
-
-    <form action="" method="get">
-    <label for="filter">Filter on price</label>
-    <select name="filter">
-        <option value="0">Free</option>
-        <option value="1">1 credit</option>
-        <option value="2">2 credits</option>
-    </select>
-    <input type="submit" value="Filter" class="btn btn--primary btn--filter">
-</form>
-
-<?php
-    if (isset($_GET['filter'])) {
-        $selected_value = $_GET['filter'];
-        $label = "";
-        
-        switch ($selected_value) {
-            case "0":
-                $label = "Free";
-                break;
-            case "1":
-                $label = "1 credit";
-                break;
-            case "2":
-                $label = "2 credits";
-                break;
-            default:
-                $label = "Unknown";
-                break;
-        }
-        
-        echo "You selected: " . $label;
-    }
-    ?> 
    
     <div class="prompts">
         <?php foreach($prompts as $prompt): ?>
