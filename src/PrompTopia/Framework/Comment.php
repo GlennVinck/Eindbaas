@@ -54,7 +54,7 @@ class Comment{
         if ($result) {
             // Update user credits after successful comment
             $userId = $this->getUserId();
-            self::updateUserCreditsOnComment($userId, 2);
+            self::updateUserCreditsOnComment($userId, 0.5);
         }
     
         return $result;

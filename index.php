@@ -43,7 +43,6 @@ if (isset($_SESSION['id'])) {
         </div>
     </div>
    
-    <h3 class="sectiontitle">Latest Prompts</h3>
     <div class="prompts">
         <?php foreach($prompts as $prompt): ?>
             <?php include "assets/promptcard.php"; ?>
