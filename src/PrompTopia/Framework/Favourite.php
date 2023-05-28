@@ -52,4 +52,12 @@ class Favourite{
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+
+    public static function getFavouritesByUser($userId){
+        $conn = Db::getInstance();
+        $statement = $conn->prepare("SELECT * FROM favourites WHERE user_id = :userid");
+        $statement->bindValue(":userid", $userId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

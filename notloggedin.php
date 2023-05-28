@@ -1,5 +1,4 @@
 <?php
-
 include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file( "config/config.ini");
 
@@ -54,15 +53,24 @@ $totalPages = ceil($totalPrompts / 10);
         <p class="login-disclaimer">*login to see full prompt details.</p>
 
     </div>
+
 <div class="prompts">
-        <?php foreach($prompts as $prompt): ?>
-            <div class="prompt">
-                <h2><?php echo htmlspecialchars( $prompt["title"]); ?></h2> <!--htmlspecialchars om de tekst te beveiligen-->
-                <h3><?php echo htmlspecialchars((substr($prompt["prompt"], 0, 20)) . '...');?></h3> <!--beperken van de tekst-->
-                <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl();?>" alt="">
-            </div>
-        <?php endforeach; ?>
+    <?php foreach($prompts as $prompt): ?>
+        <div class="prompt-gradient">
+<div class="prompt">
+    <div class="detail" data-promptid="<?php echo $prompt['id']; ?>">
+        <div class="prompt-header">
+            <img src="<?php echo $cloudinary->image($prompt["img"])->resize(Resize::fill(300, 150))->toUrl(); ?>" alt="">
+        </div>
+        <div class="prompt-details">
+            <h2><?php echo htmlspecialchars($prompt["title"]); ?></h2>
+            <p><?php echo $prompt["price"]; ?> cr</p>
+        </div>
+        <p class="tags"><?php echo htmlspecialchars($prompt["type"]); ?></p>
     </div>
+</div>
+</div>    <?php endforeach; ?>
+</div>
 
     <!-- Teller om van pagina te veranderen voor volgende prompts te zien -->
     <div class="pagination">
