@@ -38,16 +38,23 @@ if (isset($_GET['filter'])) {
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
-<h1 style="margin:100px;">Dit is de Homepage</h1>
-
-    <?php
+    <!-- <?php
     // Display the admin status if the user is logged in
     if ($isAdmin) {
         echo "<p>Welcome, you are an admin!</p>";
     } else {
         echo "<p>Welcome, you are not an admin.</p>";
     }
-    ?>
+    ?> -->
+
+<div class="hero-wrapper">
+        <h2>Dall-E, Stable Diffusion, Midjourney</h2>
+        <h1>Prompt sharing platform for <br> <span>Experience Design</span> students</h1>
+        <div>
+            <a>Search prompts</a>
+            <a>Log In</a>
+        </div>
+    </div>
 
     <form action="" method="get">
     <label for="filter">Filter on price</label>

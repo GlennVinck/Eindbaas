@@ -1,3 +1,21 @@
+/* Base Colors */
+/* :root{
+--color-canvas: #041e1b;
+color-canvas-inverted:color-brand-primary:
+color-brand-secondary:
+color-brand-tertiary:color-text-primary:
+color-text-secondary:
+color-text-inverted:
+color-text-link:
+color-text-ok:
+color-text-warn:
+color-text-danger:color-ui-primary:
+color-ui-secondary:
+color-ui-tertiary:
+color-ui-ok:
+color-ui-warn:
+color-ui-danger: */
+
 body{
     background-color: #020c0b;
     font-family: Finlandica,sans-serif;
@@ -119,6 +137,85 @@ body{
 .topnav-menu-item a:hover{
     opacity: .9;
 }
+
+.hero-wrapper{
+  min-height: 300px;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    text-align: center;
+}
+
+.hero-wrapper h2{
+    font-size: 2em;
+    font-weight: 400;
+    background-color: #f3ec78;
+    background-image: linear-gradient(45deg, #0FF046, #10efd4);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;
+    margin: 0;
+}
+
+.hero-wrapper h1{
+    font-size: 3em;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 8px 0 1.5em 0;
+}
+
+.hero-wrapper span{
+    color: #a90ff0;
+}
+
+.hero-wrapper div{
+    display: flex;
+    flex-direction: row;
+}
+
+.hero-wrapper a:nth-child(1){
+  display: block;
+  width: 180px;
+  background-color: transparent;
+  color: #ffffff;
+  text-align: center;
+  border: solid 1px #ffffff;
+  border-radius: 0.5em;
+  padding: 0.6em 1em;
+  margin-right: 1em;
+  font-size: 1.2em;
+  font-weight: 500;
+  font-family: Finlandica,sans-serif;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.hero-wrapper a:nth-child(2){
+  display: block;
+  width: 180px;
+  background-color: #ffffff;
+  color: #020c0b;
+  text-align: center;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.6em 1em;
+  font-size: 1.2em;
+  font-weight: 500;
+  font-family: Finlandica,sans-serif;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.hero-wrapper a:hover {
+  opacity: .6;
+}
+
+
 
 .PromptopiaRegister {
     height: 100vh;

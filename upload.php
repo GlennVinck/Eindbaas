@@ -21,12 +21,6 @@ if(!empty($_POST)){
             $prompt->setTags($_POST["tags"]);
             $prompt->setUserId($_SESSION['id']);
             $prompt->save();
-
-            $promptId = $prompt->getId();
-            echo $promptId;
-            //header("Location: promptdetail.php?id=$promptId");
-            //exit();
-
         }
         catch (Throwable $e) {
             $error = $e->getMessage();

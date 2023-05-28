@@ -44,6 +44,15 @@ $totalPages = ceil($totalPrompts / 10);
 </head>
 <body>
 <?php include_once "assets/topnav.php"; ?>
+    <div class="hero-wrapper">
+        <h2>Dall-E, Stable Diffusion, Midjourney</h2>
+        <h1>Prompt sharing platform for <br> <span>Experience Design</span> students</h1>
+        <div>
+            <a>Search prompts</a>
+            <a>Log In</a>
+        </div>
+    </div>
+
 <a href="login.php">login to see full prompt</a>
 <div class="prompts">
         <?php foreach($prompts as $prompt): ?>
