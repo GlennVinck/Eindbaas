@@ -108,6 +108,7 @@ Array.from(likeBtns).forEach((btn) => {
                 });
                 const result = await response.json();
                 console.log("Success:", result);
+
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -141,6 +142,9 @@ document.querySelector("#btnAddComment").addEventListener("click", (e) => {
             });
             const result = await response.json();
             console.log("Success:", result);
+            let newComment = document.createElement("li");
+            newComment.innerHTML = `<h4><?php echo $_SESSION['username']; ?></h4><p>${result.body}</p>`;
+            document.querySelector("#comments").appendChild(newComment);
         } catch (error) {
             console.error("Error:", error);
         }
