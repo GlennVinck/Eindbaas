@@ -1,6 +1,18 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: notloggedin.php');
+}
+
+$isAdmin = false;
+if (isset($_SESSION['id'])) {
+    $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
+    if(!$isAdmin) {
+        header('Location: index.php');
+    }
+}
+
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
 

@@ -1,15 +1,15 @@
 <?php 
 include_once (__DIR__ . "/bootstrap.php");
-$config = parse_ini_file( "config/config.ini");
 
-
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: notloggedin.php');
+}
 
 $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 $offset = ($page - 1) * 10;
 $prompts = \PrompTopia\Framework\Prompt::getAll($offset);
 $totalPrompts = \PrompTopia\Framework\Prompt::countAll();
 $totalPages = ceil($totalPrompts / 10);
-
 
 // Check if a search query is submitted
 if (isset($_GET['search'])) {

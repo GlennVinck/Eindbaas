@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . "/bootstrap.php";
-$config = parse_ini_file("config/config.ini");
 
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding

@@ -18,6 +18,9 @@ if (isset($_SESSION['id'])) {
     $isAdmin = \PrompTopia\Framework\User::isAdmin($_SESSION['id']);
 }
 
+
+
+
 ?>
 
 <!DOCTYPE html>

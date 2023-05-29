@@ -1,6 +1,5 @@
 <?php 
 require_once __DIR__ . "/bootstrap.php";
-$config = parse_ini_file( "config/config.ini");
 
 
 if(!isset($_SESSION['username'])) {

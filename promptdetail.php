@@ -1,6 +1,10 @@
 <?php
 include_once (__DIR__ . "/bootstrap.php");
 
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: notloggedin.php');
+}
+
 use Cloudinary\Transformation\Resize; //voor het resizen van de afbeelding
 
 // Check if the ID is present in the URL
