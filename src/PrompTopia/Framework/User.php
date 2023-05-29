@@ -248,9 +248,7 @@ class User
             $user = $statement->fetch(\PDO::FETCH_ASSOC);
             if ($user) {
                 $hash = $user['password'];
-                if (password_verify($password, $hash)) {
-                    session_start();
-    
+                if (password_verify($password, $hash)) {   
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $user["username"];
                     $_SESSION["id"] = $user["id"];
